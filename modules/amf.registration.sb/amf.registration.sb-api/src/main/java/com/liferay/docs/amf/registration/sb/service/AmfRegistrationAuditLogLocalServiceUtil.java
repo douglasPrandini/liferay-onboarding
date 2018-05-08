@@ -35,7 +35,7 @@ import org.osgi.util.tracker.ServiceTracker;
  * @generated
  */
 @ProviderType
-public class AmfRegistrationAuditLogLocalServiceUtil {
+public class 	AmfRegistrationAuditLogLocalServiceUtil {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *

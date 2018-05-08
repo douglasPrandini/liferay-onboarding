@@ -4,7 +4,8 @@ public enum ActionType {
 
     LOGIN("LOGIN"),
     LOGOUT("LOGOUT"),
-    REGISTRATION("REGISTRATION");
+    REGISTRATION("REGISTRATION"),
+    UPDATED("UPDATED");
 
     private final String text;
 

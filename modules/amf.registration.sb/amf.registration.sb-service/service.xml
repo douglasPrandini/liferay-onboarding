@@ -8,6 +8,7 @@
 		<reference entity="User" package-path="com.liferay.portal" />
 		<reference entity="Address" package-path="com.liferay.portal" />
 		<reference entity="Phone" package-path="com.liferay.portal" />
+
 	</entity>
 
 	<entity name="AmfRegistrationAuditLog" table="amf_registration_audit_log" local-service="true" remote-service="false" uuid="false">
