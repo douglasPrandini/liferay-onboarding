@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<!DOCTYPE service-builder PUBLIC "-//Liferay//DTD Service Builder 7.0.0//EN" "http://www.liferay.com/dtd/liferay-service-builder_7_0_0.dtd">
+
+<service-builder package-path="com.liferay.docs.amf.registration.sb">
+	<namespace>AMF</namespace>
+
+	<entity local-service="true" remote-service="false" name="AmfRegistration">
+		<reference entity="User" package-path="com.liferay.portal" />
+		<reference entity="Address" package-path="com.liferay.portal" />
+		<reference entity="Phone" package-path="com.liferay.portal" />
+	</entity>
+
+	<entity name="AmfRegistrationAuditLog" table="amf_registration_audit_log" local-service="true" remote-service="false" uuid="false">
+		<column db-name="id" name="id" type="long" primary="true" id-type="increment"/>
+		<column db-name="action_time" name="action_time" type="Date" />
+		<column db-name="screen_name" name="screen_name" type="String" />
+		<column db-name="user_id" name="user_id" type="long" />
+		<column db-name="ip_address" name="ip_address" type="String" />
+		<column db-name="event_type" name="event_type" type="String" />
+
+		<order by="desc">
+			<order-column name="action_time"/>
+		</order>
+
+		<finder name="user_id" return-type="Collection">
+			<finder-column name="user_id"/>
+		</finder>
+
+		<finder name="screen_name" return-type="Collection">
+			<finder-column name="screen_name"/>
+		</finder>
+
+		<finder name="event_type" return-type="Collection">
+			<finder-column name="event_type" arrayable-operator="OR" />
+		</finder>
+
+		<finder name="EventTypeAndUserName" return-type="Collection">
+			<finder-column name="event_type"/>
+			<finder-column name="screen_name"/>
+		</finder>
+
+		<finder name="EventTypeAndUserId" return-type="Collection">
+			<finder-column name="event_type" arrayable-operator="OR" />
+			<finder-column name="user_id"/>
+		</finder>
+	</entity>
+
+</service-builder>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<custom-sql>
+    <sql id="findUsersByZipCode">
+        <![CDATA[
+	        SELECT u.userId, u.firstName, u.screenName, u.emailAddress FROM lportal_dxp.User_ u
+            inner join Address a on a.userId = u.userId
+            where a.zip = ?
+            and a.primary_ = 1
+            limit ?,?;
+        ]]>
+    </sql>
+
+    <sql id="countUsersByZipCode">
+        <![CDATA[
+	        SELECT count(u.userId) FROM lportal_dxp.User_ u
+            inner join Address a on a.userId = u.userId
+            where a.zip = ?
+            and a.primary_ = 1
+        ]]>
+    </sql>
+</custom-sql>

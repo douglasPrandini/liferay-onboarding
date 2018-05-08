@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+
+<model-hints>
+	<model name="com.liferay.docs.amf.registration.sb.model.AmfRegistrationAuditLog">
+		<field name="id" type="long" />
+		<field name="action_time" type="Date" />
+		<field name="screen_name" type="String" />
+		<field name="user_id" type="long" />
+		<field name="ip_address" type="String" />
+		<field name="event_type" type="String" />
+	</model>
+</model-hints>

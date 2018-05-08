@@ -1,0 +1,4 @@
+Bundle-Name: amf.registration.search
+Bundle-SymbolicName: com.onboarding.exercises.registration.search
+Bundle-Version: 1.0.0
+Export-Package: com.onboarding.exercises.registration.search.constants

@@ -1,0 +1,4 @@
+Bundle-Name: amf.log-monitor-portlet
+Bundle-SymbolicName: com.onboarding.exercises
+Bundle-Version: 1.0.0
+Export-Package: com.onboarding.exercises.constants
