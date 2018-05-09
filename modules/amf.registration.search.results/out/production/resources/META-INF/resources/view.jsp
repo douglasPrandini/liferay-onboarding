@@ -4,9 +4,9 @@
 <%@ page import="com.liferay.docs.amf.registration.sb.dto.UserDTO" %>
 <%@ page import="com.liferay.docs.amf.registration.sb.service.AmfRegistrationLocalServiceUtil" %>
 
-<p>
+<h1>
     Search Results for <b>${zipCode}</b>
-</p>
+</h1>
 
 <%
     int zipCode = 0;

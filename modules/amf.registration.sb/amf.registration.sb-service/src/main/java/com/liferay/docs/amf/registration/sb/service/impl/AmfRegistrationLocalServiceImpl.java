@@ -23,9 +23,8 @@ import com.liferay.portal.kernel.dao.orm.QueryPos;
 import com.liferay.portal.kernel.dao.orm.SQLQuery;
 import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.model.*;
-import com.liferay.portal.kernel.service.AddressLocalServiceUtil;
-import com.liferay.portal.kernel.service.PhoneLocalServiceUtil;
+import com.liferay.portal.kernel.model.Contact;
+import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -353,11 +352,10 @@ public class AmfRegistrationLocalServiceImpl extends AmfRegistrationLocalService
 
 			return transformDTO(returnedList);
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw e;
 		} finally {
 			amfRegistrationAuditLogPersistence.closeSession(session);
 		}
-		return null;
 	}
 
 	private boolean validateZip(String s) {
@@ -380,12 +378,10 @@ public class AmfRegistrationLocalServiceImpl extends AmfRegistrationLocalService
 			return total.intValue();
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw e;
 		} finally {
 			amfRegistrationAuditLogPersistence.closeSession(session);
 		}
-
-		return -1;
 	}
 
 	private List<UserDTO> transformDTO(List<Object[]> returnedList) {

@@ -5,6 +5,10 @@ import com.liferay.docs.amf.registration.sb.dto.RegistrationDto;
 import com.liferay.docs.amf.registration.sb.service.AmfRegistrationLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 
+import com.liferay.portal.kernel.model.Country;
+import com.liferay.portal.kernel.model.Region;
+import com.liferay.portal.kernel.service.CountryServiceUtil;
+import com.liferay.portal.kernel.service.RegionServiceUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextFactory;
 
@@ -55,6 +59,16 @@ public class RegistrationPortlet extends MVCPortlet {
 		if (themeDisplay.isSignedIn()) {
 			request.setAttribute("signin", true);
 		}
+
+		Country country = null;
+		try {
+			country = CountryServiceUtil.getCountryByA2("US");
+
+		} catch(PortalException ex) {
+			SessionErrors.add(request, "error");
+		}
+		List<Region> regions =  RegionServiceUtil.getRegions(country.getCountryId());
+		request.setAttribute("regions", regions);
 
 		super.render(request, response);
 	}

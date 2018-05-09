@@ -1,6 +1,5 @@
 <%@ include file="/init.jsp" %>
 
-<%@ page import="com.liferay.portal.kernel.service.RegionServiceUtil" %>
 <%@ page import="com.liferay.portal.kernel.model.Region" %>
 <%@ page import="java.util.Date" %>
 
@@ -63,7 +62,7 @@
     startYear = defaultDate.getYear()+1900;
     startMonth = defaultDate.getMonth();
 
-    List<Region> regions =  RegionServiceUtil.getRegions(19l);
+    List<Region> regions = (List<Region>)request.getAttribute("regions");
 %>
 
 <portlet:actionURL name="/Registration/AddUser" var="addUserURL" />
@@ -144,7 +143,7 @@
                 </aui:input>
 
                 <aui:select label="State" name="state" >
-                    <% for (Region region : regions ) {
+                    <%  for (Region region : regions ) {
                             String label = region.getRegionCode() + " - " + region.getName();
                     %>
                         <aui:option value="<%=region.getRegionId()%>" label="<%=label%>"></aui:option>

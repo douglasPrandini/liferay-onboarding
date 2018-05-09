@@ -77,10 +77,11 @@ public class RegistrationDto {
     public Date getBirthdayDate() {
         if(getBirthday() != null && !getBirthday().isEmpty()) {
             SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+
             try {
                 return formatter.parse(getBirthday());
             } catch (ParseException e) {
-                e.printStackTrace();
+                return new Date();
             }
         }
 
