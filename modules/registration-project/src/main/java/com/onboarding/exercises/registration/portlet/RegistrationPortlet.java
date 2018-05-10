@@ -53,11 +53,14 @@ import java.util.Locale;
 
 public class RegistrationPortlet extends MVCPortlet {
 
+	private static final String SING_IN = "signin";
+	private static final String REGIONS = "regions";
+
 	@Override
 	public void render(RenderRequest request, RenderResponse response) throws IOException, PortletException {
 		ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);
 		if (themeDisplay.isSignedIn()) {
-			request.setAttribute("signin", true);
+			request.setAttribute(SING_IN, true);
 		}
 
 		Country country = null;
@@ -68,7 +71,7 @@ public class RegistrationPortlet extends MVCPortlet {
 			SessionErrors.add(request, "error");
 		}
 		List<Region> regions =  RegionServiceUtil.getRegions(country.getCountryId());
-		request.setAttribute("regions", regions);
+		request.setAttribute(REGIONS, regions);
 
 		super.render(request, response);
 	}

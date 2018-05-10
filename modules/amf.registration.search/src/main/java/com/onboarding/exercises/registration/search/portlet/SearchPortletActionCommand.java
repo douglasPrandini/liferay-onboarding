@@ -15,6 +15,7 @@ import javax.xml.namespace.QName;
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings("unchecked")
 @Component(immediate = true, property = {
             "javax.portlet.name=" + RegistrationSearchPortletKeys.RegistrationSearch,
             "mvc.command.name=/RegistrationSearch/searchForm",
@@ -50,4 +51,8 @@ public class SearchPortletActionCommand extends BaseMVCActionCommand {
         zipCodes.add(zipCode);
         session.setAttribute(ZIP_CODE_LIST, zipCodes, PortletSession.APPLICATION_SCOPE);
     }
+
+
+
+
 }

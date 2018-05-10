@@ -58,24 +58,7 @@ public class AmfRegistrationAuditLogLocalServiceImpl
 		amfRegistrationAuditLogPersistence.update(amfRegistrationAuditLog);
 	}
 
-	public List<User> getUsers(int zipCode, int start, int end){
-		/*
-		SELECT firstName, screenName, emailAddress, userId
-		FROM lportal_dxp.User_
-		where userId in (SELECT userId FROM lportal_dxp.Address where zip = 80500);
-		*/
-		DynamicQuery userQuery = DynamicQueryFactoryUtil.forClass(User.class, "u");
-		userQuery.setProjection(PropertyFactoryUtil.forName("u.firstName"));
-		userQuery.setProjection(PropertyFactoryUtil.forName("u.firstName"));
-		userQuery.setProjection(PropertyFactoryUtil.forName("u.firstName"));
 
-				//.add(RestrictionsFactoryUtil.eq("name", entryName))
-				//.add(PropertyFactoryUtil.forName("guestbookId").in(guestbookQuery))
-				//.addOrder(order);
-
-		List<User> users = UserLocalServiceUtil.dynamicQuery(userQuery);
-		return users;
-	}
 
 	public List<AmfRegistrationAuditLog> findByUserId(long userId) {
 		return AmfRegistrationAuditLogUtil.findByuser_id(userId);

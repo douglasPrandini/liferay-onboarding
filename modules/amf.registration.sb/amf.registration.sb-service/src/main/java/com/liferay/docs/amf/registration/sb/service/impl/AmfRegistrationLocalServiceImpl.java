@@ -50,6 +50,8 @@ public class AmfRegistrationLocalServiceImpl extends AmfRegistrationLocalService
 	public static final String FIND_USERS_BY_ZIP_CODE = "findUsersByZipCode";
 	public static final String COUNT_USERS_BY_ZIP_CODE = "countUsersByZipCode";
 
+
+
 	public AmfRegistrationLocalServiceImpl(){
 		errors = new ArrayList<String>();
 	}
@@ -118,7 +120,10 @@ public class AmfRegistrationLocalServiceImpl extends AmfRegistrationLocalService
 	}
 
 	private void validate(RegistrationDto registrationDto) {
+
 		validateFirstName(registrationDto.getFirstName());
+		if(!errors.isEmpty()) return;
+
 		validateLasttName(registrationDto.getLastName());
 		validateEmailAddress(registrationDto.getEmailAddress());
 		validateUsername(registrationDto);

@@ -303,12 +303,6 @@ public class AmfRegistrationAuditLogLocalServiceWrapper
 			end);
 	}
 
-	@Override
-	public java.util.List<com.liferay.portal.kernel.model.User> getUsers(
-		int zipCode, int start, int end) {
-		return _amfRegistrationAuditLogLocalService.getUsers(zipCode, start, end);
-	}
-
 	/**
 	* Returns the number of rows matching the dynamic query.
 	*

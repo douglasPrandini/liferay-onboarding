@@ -278,11 +278,6 @@ public class AmfRegistrationAuditLogLocalServiceUtil {
 		return getService().getAmfRegistrationAuditLogs(start, end);
 	}
 
-	public static java.util.List<com.liferay.portal.kernel.model.User> getUsers(
-		int zipCode, int start, int end) {
-		return getService().getUsers(zipCode, start, end);
-	}
-
 	/**
 	* Returns the number of rows matching the dynamic query.
 	*
