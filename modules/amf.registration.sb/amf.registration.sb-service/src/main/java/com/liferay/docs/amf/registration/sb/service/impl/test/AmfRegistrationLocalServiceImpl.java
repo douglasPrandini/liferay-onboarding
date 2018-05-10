@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.docs.amf.registration.sb.service.impl;
+package com.liferay.docs.amf.registration.sb.service.impl.test;
 
 import com.liferay.docs.amf.registration.sb.custom.exceptions.RegistrationPortalException;
 import com.liferay.docs.amf.registration.sb.dto.RegistrationDto;

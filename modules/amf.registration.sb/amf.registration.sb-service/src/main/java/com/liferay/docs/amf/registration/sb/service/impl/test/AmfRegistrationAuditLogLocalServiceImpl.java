@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.docs.amf.registration.sb.service.impl;
+package com.liferay.docs.amf.registration.sb.service.impl.test;
 
 import com.liferay.docs.amf.registration.sb.dto.AmfRegistrationAuditLogDTO;
 import com.liferay.docs.amf.registration.sb.enums.ActionType;
