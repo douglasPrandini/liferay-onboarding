@@ -7,4 +7,5 @@ dependencies {
 	compileOnly group: "org.osgi", name: "osgi.cmpn", version: "6.0.0"
 	compileOnly project(":modules:amf.registration.sb:amf.registration.sb-api")
 	compileOnly project(":modules:amf.registration.sb:amf.registration.sb-service")
+
 }

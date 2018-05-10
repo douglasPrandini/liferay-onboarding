@@ -122,7 +122,6 @@ public class AmfRegistrationLocalServiceImpl extends AmfRegistrationLocalService
 	private void validate(RegistrationDto registrationDto) {
 
 		validateFirstName(registrationDto.getFirstName());
-		if(!errors.isEmpty()) return;
 
 		validateLasttName(registrationDto.getLastName());
 		validateEmailAddress(registrationDto.getEmailAddress());
