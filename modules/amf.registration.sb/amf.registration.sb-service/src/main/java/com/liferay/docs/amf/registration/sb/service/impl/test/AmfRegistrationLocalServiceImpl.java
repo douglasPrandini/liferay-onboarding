@@ -302,7 +302,7 @@ public class AmfRegistrationLocalServiceImpl extends AmfRegistrationLocalService
 	}
 
 	private void validateBirthdate(Date birthdayDate) {
-		if(getAge(birthdayDate) < 13){
+		if(getAge(birthdayDate) < 13) {
 			errors.add("birthday.age.min");
 		}
 

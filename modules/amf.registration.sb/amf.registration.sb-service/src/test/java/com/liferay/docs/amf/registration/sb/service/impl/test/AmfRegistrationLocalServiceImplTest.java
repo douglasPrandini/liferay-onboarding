@@ -33,14 +33,14 @@ public class AmfRegistrationLocalServiceImplTest {
     @Mock
     private UserLocalService userLocalService;
 
+    @Mock
+    private User _user;
+
     @Before
     public void setup() {
-
     }
-
     @After
     public void clean() {
-
     }
 
     @Test
@@ -72,14 +72,9 @@ public class AmfRegistrationLocalServiceImplTest {
     }
 
     @Test
-    public void lastnameRequired() throws PortalException {
+    public void lastnameRequired() {
         RegistrationDto registrationDto = getRegistrationDto();
         registrationDto.setLastName("");
-
-        long companyId = registrationDto.getCompanyId();
-        String username = registrationDto.getUsername();
-
-        Mockito.when(userLocalService.getUserByScreenName(companyId, username)).thenThrow(PortalException.class);
 
         String keyMessageError = "last-name.required";
         checkErrorServiceAddNewAccount(registrationDto, keyMessageError);
@@ -131,6 +126,55 @@ public class AmfRegistrationLocalServiceImplTest {
         registrationDto.setEmailAddress("email!email.com");
 
         String keyMessageError = "email-address.invalid";
+        checkErrorServiceAddNewAccount(registrationDto, keyMessageError);
+    }
+
+    @Test
+    public void usernameRequired() {
+        RegistrationDto registrationDto = getRegistrationDto();
+        registrationDto.setUsername("");
+
+        String keyMessageError = "username.required";
+        checkErrorServiceAddNewAccount(registrationDto, keyMessageError);
+    }
+
+    @Test
+    public void usernameMustBeAlphanumeric() {
+        RegistrationDto registrationDto = getRegistrationDto();
+        registrationDto.setUsername("test@");
+
+        String keyMessageError = "username.alphanumeric";
+        checkErrorServiceAddNewAccount(registrationDto, keyMessageError);
+    }
+
+    @Test
+    public void usernameMustHaveMinimum4() {
+        RegistrationDto registrationDto = getRegistrationDto();
+        registrationDto.setUsername("tes");
+
+        String keyMessageError = "username.length-min";
+        checkErrorServiceAddNewAccount(registrationDto, keyMessageError);
+    }
+
+    @Test
+    public void usernameMustHaveMAximum16() {
+        RegistrationDto registrationDto = getRegistrationDto();
+        registrationDto.setUsername("myusernameisverylong");
+
+        String keyMessageError = "username.length-max";
+        checkErrorServiceAddNewAccount(registrationDto, keyMessageError);
+    }
+
+    @Test
+    public void usernameMustBeUnique() throws PortalException {
+        RegistrationDto registrationDto = getRegistrationDto();
+        registrationDto.setUsername("test");
+
+        long companyId = registrationDto.getCompanyId();
+        String username = registrationDto.getUsername();
+        Mockito.when(userLocalService.getUserByScreenName(companyId, username)).thenReturn(_user);
+
+        String keyMessageError = "username.unique";
         checkErrorServiceAddNewAccount(registrationDto, keyMessageError);
     }
 
