@@ -50,8 +50,6 @@ public class AmfRegistrationLocalServiceImpl extends AmfRegistrationLocalService
 	public static final String FIND_USERS_BY_ZIP_CODE = "findUsersByZipCode";
 	public static final String COUNT_USERS_BY_ZIP_CODE = "countUsersByZipCode";
 
-
-
 	public AmfRegistrationLocalServiceImpl(){
 		errors = new ArrayList<String>();
 	}
@@ -122,12 +120,12 @@ public class AmfRegistrationLocalServiceImpl extends AmfRegistrationLocalService
 	private void validate(RegistrationDto registrationDto) {
 
 		validateFirstName(registrationDto.getFirstName());
-
 		validateLasttName(registrationDto.getLastName());
 		validateEmailAddress(registrationDto.getEmailAddress());
 		validateUsername(registrationDto);
 		validateBirthdate(registrationDto.getBirthdayDate());
 		validatePassword(registrationDto.getPassword(), registrationDto.getPassword2());
+
 		validateHomePhone(registrationDto.getHomePhone());
 		validateMobile(registrationDto.getMobilePhone());
 
@@ -295,7 +293,7 @@ public class AmfRegistrationLocalServiceImpl extends AmfRegistrationLocalService
 
 	private boolean isUnique(RegistrationDto dto) {
 		try {
-			UserLocalServiceUtil.getUserByScreenName(dto.getCompanyId(), dto.getUsername());
+			userLocalService.getUserByScreenName(dto.getCompanyId(), dto.getUsername());
 			return false;
 		} catch (PortalException e) {
 			//User not exists

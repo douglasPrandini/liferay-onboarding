@@ -3,16 +3,27 @@ package com.liferay.docs.amf.registration.sb.service.impl.test;
 
 import com.liferay.docs.amf.registration.sb.custom.exceptions.RegistrationPortalException;
 import com.liferay.docs.amf.registration.sb.dto.RegistrationDto;
+import com.liferay.expando.kernel.model.ExpandoBridge;
+import com.liferay.exportimport.kernel.lar.StagedModelType;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.*;
+import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
+import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.RemotePreference;
+import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import java.util.List;
+import java.io.Serializable;
+import java.util.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AmfRegistrationLocalServiceImplTest {
@@ -20,9 +31,17 @@ public class AmfRegistrationLocalServiceImplTest {
     @InjectMocks
     private AmfRegistrationLocalServiceImpl _amfRegistrationLocalServiceImpl;
     @Mock
-    private UserLocalService _userLocalService;
-    @Mock
-    private UserLocalServiceUtil _userLocalServiceUtil;
+    private UserLocalService userLocalService;
+
+    @Before
+    public void setup() {
+
+    }
+
+    @After
+    public void clean() {
+
+    }
 
     @Test
     public void firstnameRequired() {
@@ -53,9 +72,14 @@ public class AmfRegistrationLocalServiceImplTest {
     }
 
     @Test
-    public void lastnameRequired() {
+    public void lastnameRequired() throws PortalException {
         RegistrationDto registrationDto = getRegistrationDto();
         registrationDto.setLastName("");
+
+        long companyId = registrationDto.getCompanyId();
+        String username = registrationDto.getUsername();
+
+        Mockito.when(userLocalService.getUserByScreenName(companyId, username)).thenThrow(PortalException.class);
 
         String keyMessageError = "last-name.required";
         checkErrorServiceAddNewAccount(registrationDto, keyMessageError);
@@ -74,10 +98,39 @@ public class AmfRegistrationLocalServiceImplTest {
     public void lastnameMaxLength50Chars() {
         RegistrationDto registrationDto = getRegistrationDto();
 
-        String charLength_51 = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
-        registrationDto.setLastName(charLength_51);
+        String lastnameLength_51 = new String(new char[51]).replace('\0', 'A');
+        registrationDto.setLastName(lastnameLength_51);
 
         String keyMessageError = "last-name.length-max";
+        checkErrorServiceAddNewAccount(registrationDto, keyMessageError);
+    }
+
+    @Test
+    public void emailAddressRequired() {
+        RegistrationDto registrationDto = getRegistrationDto();
+        registrationDto.setEmailAddress("");
+
+        String keyMessageError = "email-address.required";
+        checkErrorServiceAddNewAccount(registrationDto, keyMessageError);
+    }
+
+    @Test
+    public void emailAddressLangthMax() {
+        RegistrationDto registrationDto = getRegistrationDto();
+
+        String longEmail = new String(new char[260]).replace('\0', 'e');
+        registrationDto.setEmailAddress(longEmail);
+
+        String keyMessageError = "email-address.length-max";
+        checkErrorServiceAddNewAccount(registrationDto, keyMessageError);
+    }
+
+    @Test
+    public void emailAddressValid() {
+        RegistrationDto registrationDto = getRegistrationDto();
+        registrationDto.setEmailAddress("email!email.com");
+
+        String keyMessageError = "email-address.invalid";
         checkErrorServiceAddNewAccount(registrationDto, keyMessageError);
     }
 
