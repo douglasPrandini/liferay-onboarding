@@ -3,15 +3,9 @@ package com.liferay.docs.amf.registration.sb.service.impl.test;
 
 import com.liferay.docs.amf.registration.sb.custom.exceptions.RegistrationPortalException;
 import com.liferay.docs.amf.registration.sb.dto.RegistrationDto;
-import com.liferay.expando.kernel.model.ExpandoBridge;
-import com.liferay.exportimport.kernel.lar.StagedModelType;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.model.*;
-import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.UserLocalService;
-import com.liferay.portal.kernel.service.UserLocalServiceUtil;
-import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.util.RemotePreference;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -22,8 +16,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import java.io.Serializable;
-import java.util.*;
+import java.util.List;
+
 
 @RunWith(MockitoJUnitRunner.class)
 public class AmfRegistrationLocalServiceImplTest {
@@ -64,8 +58,8 @@ public class AmfRegistrationLocalServiceImplTest {
     @Test
     public void firstnameMaxLength50Chars() {
         RegistrationDto registrationDto = getRegistrationDto();
-        String charLength_51 = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
-        registrationDto.setFirstName(charLength_51);
+        String lastnameLength_51 = new String(new char[51]).replace('\0', 'A');
+        registrationDto.setFirstName(lastnameLength_51);
 
         String keyMessageError = "first-name.length-max";
         checkErrorServiceAddNewAccount(registrationDto, keyMessageError);
@@ -175,6 +169,15 @@ public class AmfRegistrationLocalServiceImplTest {
         Mockito.when(userLocalService.getUserByScreenName(companyId, username)).thenReturn(_user);
 
         String keyMessageError = "username.unique";
+        checkErrorServiceAddNewAccount(registrationDto, keyMessageError);
+    }
+
+    @Test
+    public void birthdayMustBeGreaterThan13YearOld () {
+        RegistrationDto registrationDto = getRegistrationDto();
+        registrationDto.setBirthday("10/10/2010");
+
+        String keyMessageError = "birthday.age.min";
         checkErrorServiceAddNewAccount(registrationDto, keyMessageError);
     }
 
