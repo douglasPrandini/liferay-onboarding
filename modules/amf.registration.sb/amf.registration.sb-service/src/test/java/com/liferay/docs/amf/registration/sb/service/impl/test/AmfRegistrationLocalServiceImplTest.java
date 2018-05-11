@@ -16,6 +16,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -178,6 +179,52 @@ public class AmfRegistrationLocalServiceImplTest {
         registrationDto.setBirthday("10/10/2010");
 
         String keyMessageError = "birthday.age.min";
+        checkErrorServiceAddNewAccount(registrationDto, keyMessageError);
+    }
+
+    @Test
+    public void password1Invalid() {
+        RegistrationDto registrationDto = getRegistrationDto();
+
+        List<String> invalidPasswords = new ArrayList<>();
+
+        invalidPasswords.add("must6");
+        invalidPasswords.add("mustB3valid");
+        invalidPasswords.add("mustBevalid!");
+        invalidPasswords.add("mustb3valid!");
+
+        for (String password: invalidPasswords) {
+            registrationDto.setPassword1(password);
+            String keyMessageError = "password.not.valid";
+            checkErrorServiceAddNewAccount(registrationDto, keyMessageError);
+        }
+
+    }
+
+    @Test
+    public void password1Required() {
+        RegistrationDto registrationDto = getRegistrationDto();
+        registrationDto.setPassword1("");
+
+        String keyMessageError = "password.required";
+        checkErrorServiceAddNewAccount(registrationDto, keyMessageError);
+    }
+
+    @Test
+    public void password2MusbBeEquals() {
+        RegistrationDto registrationDto = getRegistrationDto();
+        registrationDto.setPassword2("notEqual");
+
+        String keyMessageError = "password.must.match";
+        checkErrorServiceAddNewAccount(registrationDto, keyMessageError);
+    }
+
+    @Test
+    public void MobilePhoneMustHave10Chars () {
+        RegistrationDto registrationDto = getRegistrationDto();
+        registrationDto.setMobilePhone("123456789");
+
+        String keyMessageError = "mobile-phone-invalid";
         checkErrorServiceAddNewAccount(registrationDto, keyMessageError);
     }
 
