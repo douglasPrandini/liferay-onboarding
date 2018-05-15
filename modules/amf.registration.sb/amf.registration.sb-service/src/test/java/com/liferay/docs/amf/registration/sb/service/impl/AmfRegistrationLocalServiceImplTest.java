@@ -404,21 +404,21 @@ public class AmfRegistrationLocalServiceImplTest {
     public void createNewAccount() throws PortalException {
         RegistrationDto registrationDto = getRegistrationDto();
 
-        //Unique user name
+        //mock unique user name
         long companyId = registrationDto.getCompanyId();
         String username = registrationDto.getUsername();
         Mockito.when(userLocalService.getUserByScreenName(companyId, username)).thenThrow(PortalException.class);
 
+        //mock add user to return and object user
         Mockito.when(assessorUserLocalService.addUser(registrationDto)).thenReturn(_user);
 
         _amfRegistrationLocalServiceImpl.addNewAccount(registrationDto);
 
+        //Asserts
         Mockito.verify(assessorUserLocalService, VerificationModeFactory.times(1))
                 .addUser(registrationDto);
-
         Mockito.verify(userLocalService, VerificationModeFactory.times(1))
                 .updateReminderQuery(_user.getUserId(), registrationDto.getSecurityQuestion(), registrationDto.getSecurityAnswer());
-
         Mockito.verify(userLocalService, VerificationModeFactory.times(1))
                 .updateAgreedToTermsOfUse(_user.getUserId(), registrationDto.getAcceptedTou());
     }
