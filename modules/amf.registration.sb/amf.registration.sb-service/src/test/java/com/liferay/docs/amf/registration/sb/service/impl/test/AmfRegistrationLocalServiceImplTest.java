@@ -17,10 +17,13 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.internal.verification.VerificationModeFactory;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.mockito.stubbing.OngoingStubbing;
+import org.mockito.verification.VerificationMode;
 
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -415,28 +418,36 @@ public class AmfRegistrationLocalServiceImplTest {
         int birthdayYear = cal.get(Calendar.YEAR);
 
         Mockito.when(userLocalService.addUser(0,
-                registrationDto.getCompanyId(),
-                false,
-                registrationDto.getPassword(),
-                registrationDto.getPassword2(),
-                false,
-                registrationDto.getUsername(),
-                registrationDto.getEmailAddress(),
-                0,
-                null,
-                registrationDto.getLocale(),
-                registrationDto.getFirstName(),
-                null,
-                registrationDto.getLastName(),
-                0,
-                0,
-                true,
+                registrationDto.getCompanyId(),false,
+                registrationDto.getPassword(), registrationDto.getPassword2(),
+                false, registrationDto.getUsername(),
+                registrationDto.getEmailAddress(),0,null,
+                registrationDto.getLocale(), registrationDto.getFirstName(),
+                null, registrationDto.getLastName(),
+                0,0,true,
                 birthdayMonth, birthdayDay, birthdayYear,
                 null, null, null,
                 null, null, false, null)).thenReturn(_user);
 
-
         _amfRegistrationLocalServiceImpl.addNewAccount(registrationDto);
+
+        Mockito.verify(userLocalService, VerificationModeFactory.times(1)).addUser(0,
+                registrationDto.getCompanyId(),false,
+                registrationDto.getPassword(), registrationDto.getPassword2(),
+                false, registrationDto.getUsername(),
+                registrationDto.getEmailAddress(),0,null,
+                registrationDto.getLocale(), registrationDto.getFirstName(),
+                null, registrationDto.getLastName(),
+                0,0,true,
+                birthdayMonth, birthdayDay, birthdayYear,
+                null, null, null,
+                null, null, false, null);
+
+        Mockito.verify(userLocalService, VerificationModeFactory.times(1))
+                .updateReminderQuery(_user.getUserId(), registrationDto.getSecurityQuestion(), registrationDto.getSecurityAnswer());
+
+        Mockito.verify(userLocalService, VerificationModeFactory.times(1))
+                .updateAgreedToTermsOfUse(_user.getUserId(), registrationDto.getAcceptedTou());
     }
 
     private void checkErrorServiceAddNewAccount(RegistrationDto registrationDto, String keyMessageError) {
