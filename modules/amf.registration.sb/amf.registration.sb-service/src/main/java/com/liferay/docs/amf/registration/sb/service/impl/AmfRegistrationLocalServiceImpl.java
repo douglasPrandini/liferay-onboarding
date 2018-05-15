@@ -12,12 +12,13 @@
  * details.
  */
 
-package com.liferay.docs.amf.registration.sb.service.impl.test;
+package com.liferay.docs.amf.registration.sb.service.impl;
 
 import com.liferay.docs.amf.registration.sb.custom.exceptions.RegistrationPortalException;
 import com.liferay.docs.amf.registration.sb.dto.RegistrationDto;
 import com.liferay.docs.amf.registration.sb.dto.UserDTO;
 import com.liferay.docs.amf.registration.sb.service.base.AmfRegistrationLocalServiceBaseImpl;
+import com.liferay.docs.amf.registration.sb.service.liferay.services.acessor.AssessorUserLocalService;
 import com.liferay.portal.dao.orm.custom.sql.CustomSQLUtil;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
 import com.liferay.portal.kernel.dao.orm.SQLQuery;
@@ -33,7 +34,6 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -51,8 +51,12 @@ public class AmfRegistrationLocalServiceImpl extends AmfRegistrationLocalService
 	public static final String FIND_USERS_BY_ZIP_CODE = "findUsersByZipCode";
 	public static final String COUNT_USERS_BY_ZIP_CODE = "countUsersByZipCode";
 
-	public AmfRegistrationLocalServiceImpl(){
+	private AssessorUserLocalService _acessorUserLocalService;
+
+	public AmfRegistrationLocalServiceImpl() {
 		errors = new ArrayList<>();
+
+        _acessorUserLocalService = new AssessorUserLocalService(userLocalService);
 	}
 
 	@Override
@@ -75,37 +79,9 @@ public class AmfRegistrationLocalServiceImpl extends AmfRegistrationLocalService
 
 	private void createNewAccount(RegistrationDto registrationDto) throws PortalException {
 
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(registrationDto.getBirthdayDate());
-		int birthdayDay = cal.get(Calendar.DAY_OF_MONTH);
-		int birthdayMonth = cal.get(Calendar.MONTH);
-		int birthdayYear = cal.get(Calendar.YEAR);
-		boolean male = registrationDto.getGender() == 1;
-
-		User user = userLocalService.addUser(0,
-				registrationDto.getCompanyId(),
-				false,
-				registrationDto.getPassword(),
-				registrationDto.getPassword2(),
-				false,
-				registrationDto.getUsername(),
-				registrationDto.getEmailAddress(),
-				0,
-				null,
-				registrationDto.getLocale(),
-				registrationDto.getFirstName(),
-				null,
-				registrationDto.getLastName(),
-				0,
-				0,
-				male,
-				birthdayMonth, birthdayDay, birthdayYear,
-				null, null, null,
-				null, null, false, getServiceContext());
-
+	    User user = _acessorUserLocalService.addUser(registrationDto);
 		userLocalService.updateReminderQuery(user.getUserId(), registrationDto.getSecurityQuestion(), registrationDto.getSecurityAnswer());
 		userLocalService.updateAgreedToTermsOfUse(user.getUserId(), registrationDto.getAcceptedTou());
-
 
 		long countryId = 19;
 		long typeId = 11002;

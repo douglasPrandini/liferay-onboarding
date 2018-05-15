@@ -18,7 +18,7 @@ import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.docs.amf.registration.sb.model.AmfRegistrationAuditLog;
 import com.liferay.docs.amf.registration.sb.service.AmfRegistrationAuditLogLocalService;
-import com.liferay.docs.amf.registration.sb.service.impl.test.AmfRegistrationAuditLogLocalServiceImpl;
+import com.liferay.docs.amf.registration.sb.service.impl.AmfRegistrationAuditLogLocalServiceImpl;
 import com.liferay.docs.amf.registration.sb.service.persistence.AmfRegistrationAuditLogPersistence;
 
 import com.liferay.portal.kernel.bean.BeanReference;

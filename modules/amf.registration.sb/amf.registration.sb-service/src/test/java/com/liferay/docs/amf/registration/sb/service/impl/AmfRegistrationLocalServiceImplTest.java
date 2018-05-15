@@ -1,13 +1,13 @@
-package com.liferay.docs.amf.registration.sb.service.impl.test;
+package com.liferay.docs.amf.registration.sb.service.impl;
 
 
 import com.liferay.docs.amf.registration.sb.custom.exceptions.RegistrationPortalException;
 import com.liferay.docs.amf.registration.sb.dto.RegistrationDto;
+import com.liferay.docs.amf.registration.sb.service.liferay.services.acessor.AssessorUserLocalService;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.AddressLocalService;
 import com.liferay.portal.kernel.service.PhoneLocalService;
-import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalService;
 import org.junit.After;
 import org.junit.Assert;
@@ -18,14 +18,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.internal.verification.VerificationModeFactory;
-import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.mockito.stubbing.OngoingStubbing;
-import org.mockito.verification.VerificationMode;
 
-import java.sql.Time;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
@@ -35,6 +30,9 @@ public class AmfRegistrationLocalServiceImplTest {
 
     @InjectMocks
     private AmfRegistrationLocalServiceImpl _amfRegistrationLocalServiceImpl;
+
+    @Mock
+    private AssessorUserLocalService assessorUserLocalService;
 
     @Mock
     private UserLocalService userLocalService;
@@ -411,37 +409,12 @@ public class AmfRegistrationLocalServiceImplTest {
         String username = registrationDto.getUsername();
         Mockito.when(userLocalService.getUserByScreenName(companyId, username)).thenThrow(PortalException.class);
 
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(registrationDto.getBirthdayDate());
-        int birthdayDay = cal.get(Calendar.DAY_OF_MONTH);
-        int birthdayMonth = cal.get(Calendar.MONTH);
-        int birthdayYear = cal.get(Calendar.YEAR);
-
-        Mockito.when(userLocalService.addUser(0,
-                registrationDto.getCompanyId(),false,
-                registrationDto.getPassword(), registrationDto.getPassword2(),
-                false, registrationDto.getUsername(),
-                registrationDto.getEmailAddress(),0,null,
-                registrationDto.getLocale(), registrationDto.getFirstName(),
-                null, registrationDto.getLastName(),
-                0,0,true,
-                birthdayMonth, birthdayDay, birthdayYear,
-                null, null, null,
-                null, null, false, null)).thenReturn(_user);
+        Mockito.when(assessorUserLocalService.addUser(registrationDto)).thenReturn(_user);
 
         _amfRegistrationLocalServiceImpl.addNewAccount(registrationDto);
 
-        Mockito.verify(userLocalService, VerificationModeFactory.times(1)).addUser(0,
-                registrationDto.getCompanyId(),false,
-                registrationDto.getPassword(), registrationDto.getPassword2(),
-                false, registrationDto.getUsername(),
-                registrationDto.getEmailAddress(),0,null,
-                registrationDto.getLocale(), registrationDto.getFirstName(),
-                null, registrationDto.getLastName(),
-                0,0,true,
-                birthdayMonth, birthdayDay, birthdayYear,
-                null, null, null,
-                null, null, false, null);
+        Mockito.verify(assessorUserLocalService, VerificationModeFactory.times(1))
+                .addUser(registrationDto);
 
         Mockito.verify(userLocalService, VerificationModeFactory.times(1))
                 .updateReminderQuery(_user.getUserId(), registrationDto.getSecurityQuestion(), registrationDto.getSecurityAnswer());
