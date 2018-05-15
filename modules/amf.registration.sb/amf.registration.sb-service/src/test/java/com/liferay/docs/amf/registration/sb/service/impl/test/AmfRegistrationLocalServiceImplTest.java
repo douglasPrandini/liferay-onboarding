@@ -5,6 +5,9 @@ import com.liferay.docs.amf.registration.sb.custom.exceptions.RegistrationPortal
 import com.liferay.docs.amf.registration.sb.dto.RegistrationDto;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.service.AddressLocalService;
+import com.liferay.portal.kernel.service.PhoneLocalService;
+import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalService;
 import org.junit.After;
 import org.junit.Assert;
@@ -14,10 +17,14 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.stubbing.OngoingStubbing;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 
 @RunWith(MockitoJUnitRunner.class)
@@ -25,8 +32,15 @@ public class AmfRegistrationLocalServiceImplTest {
 
     @InjectMocks
     private AmfRegistrationLocalServiceImpl _amfRegistrationLocalServiceImpl;
+
     @Mock
     private UserLocalService userLocalService;
+
+    @Mock
+    private AddressLocalService addressLocalService;
+
+    @Mock
+    private PhoneLocalService phoneLocalService;
 
     @Mock
     private User _user;
@@ -183,6 +197,15 @@ public class AmfRegistrationLocalServiceImplTest {
     }
 
     @Test
+    public void password1Required() {
+        RegistrationDto registrationDto = getRegistrationDto();
+        registrationDto.setPassword1("");
+
+        String keyMessageError = "password.required";
+        checkErrorServiceAddNewAccount(registrationDto, keyMessageError);
+    }
+
+    @Test
     public void password1Invalid() {
         RegistrationDto registrationDto = getRegistrationDto();
 
@@ -202,15 +225,6 @@ public class AmfRegistrationLocalServiceImplTest {
     }
 
     @Test
-    public void password1Required() {
-        RegistrationDto registrationDto = getRegistrationDto();
-        registrationDto.setPassword1("");
-
-        String keyMessageError = "password.required";
-        checkErrorServiceAddNewAccount(registrationDto, keyMessageError);
-    }
-
-    @Test
     public void password2MusbBeEquals() {
         RegistrationDto registrationDto = getRegistrationDto();
         registrationDto.setPassword2("notEqual");
@@ -220,12 +234,209 @@ public class AmfRegistrationLocalServiceImplTest {
     }
 
     @Test
-    public void MobilePhoneMustHave10Chars () {
+    public void givenLessThan10NumberMobilephoneErrorShouldThrow () {
         RegistrationDto registrationDto = getRegistrationDto();
         registrationDto.setMobilePhone("123456789");
 
         String keyMessageError = "mobile-phone-invalid";
         checkErrorServiceAddNewAccount(registrationDto, keyMessageError);
+    }
+
+    @Test
+    public void givenMoreThan10NumberMobilephoneErrorShouldThrow () {
+        RegistrationDto registrationDto = getRegistrationDto();
+        registrationDto.setMobilePhone("12345678901");
+
+        String keyMessageError = "mobile-phone-invalid";
+        checkErrorServiceAddNewAccount(registrationDto, keyMessageError);
+    }
+
+    @Test
+    public void givenLessThan10NumberHomephoneErrorShouldThrow () {
+        RegistrationDto registrationDto = getRegistrationDto();
+        registrationDto.setHomePhone("123456789");
+
+        String keyMessageError = "home-phone-invalid";
+        checkErrorServiceAddNewAccount(registrationDto, keyMessageError);
+    }
+
+    @Test
+    public void givenMoreThan10NumberHomephoneErrorShouldThrow() {
+        RegistrationDto registrationDto = getRegistrationDto();
+        registrationDto.setHomePhone("12345678901");
+
+        String keyMessageError = "home-phone-invalid";
+        checkErrorServiceAddNewAccount(registrationDto, keyMessageError);
+    }
+
+    @Test
+    public void Address1MustBeRequired() {
+        RegistrationDto registrationDto = getRegistrationDto();
+        registrationDto.setAddress("");
+
+        String keyMessageError = "address.required";
+        checkErrorServiceAddNewAccount(registrationDto, keyMessageError);
+    }
+
+    @Test
+    public void Address1MustBeAlphanumeric() {
+        RegistrationDto registrationDto = getRegistrationDto();
+        registrationDto.setAddress("Address !@#$%");
+
+        String keyMessageError = "address.alphanumeric";
+        checkErrorServiceAddNewAccount(registrationDto, keyMessageError);
+    }
+
+    @Test
+    public void Address1MustBeLessThan255Chars() {
+        RegistrationDto registrationDto = getRegistrationDto();
+        String addressMoreThan255Chars = new String(new char[256]).replace('\0', 'A');
+        registrationDto.setAddress(addressMoreThan255Chars);
+
+        String keyMessageError = "address.length-max";
+        checkErrorServiceAddNewAccount(registrationDto, keyMessageError);
+    }
+
+    @Test
+    public void Address2MustBeAlphanumeric() {
+        RegistrationDto registrationDto = getRegistrationDto();
+        registrationDto.setAddress2("Address 2 !@#$%");
+
+        String keyMessageError = "address2.alphanumeric";
+        checkErrorServiceAddNewAccount(registrationDto, keyMessageError);
+    }
+
+    @Test
+    public void Address2MustBeLessThan255Chars() {
+        RegistrationDto registrationDto = getRegistrationDto();
+        String addressMoreThan255Chars = new String(new char[256]).replace('\0', 'A');
+        registrationDto.setAddress2(addressMoreThan255Chars);
+
+        String keyMessageError = "address2.length-max";
+        checkErrorServiceAddNewAccount(registrationDto, keyMessageError);
+    }
+
+    @Test
+    public void cityMustBeRequired() {
+        RegistrationDto registrationDto = getRegistrationDto();
+        registrationDto.setCity("");
+
+        String keyMessageError = "city.required";
+        checkErrorServiceAddNewAccount(registrationDto, keyMessageError);
+    }
+
+    @Test
+    public void cityMustBeAlphanumeric() {
+        RegistrationDto registrationDto = getRegistrationDto();
+        registrationDto.setCity("Maringá");
+
+        String keyMessageError = "city.alphanumeric";
+        checkErrorServiceAddNewAccount(registrationDto, keyMessageError);
+    }
+
+    @Test
+    public void cityMustBeLessThan255Chars() {
+        RegistrationDto registrationDto = getRegistrationDto();
+        String addressMoreThan255Chars = new String(new char[256]).replace('\0', 'A');
+        registrationDto.setCity(addressMoreThan255Chars);
+
+        String keyMessageError = "city.length-max";
+        checkErrorServiceAddNewAccount(registrationDto, keyMessageError);
+    }
+
+    @Test
+    public void givenLessThan5numberZipCodeErrorShouldThrow () {
+        RegistrationDto registrationDto = getRegistrationDto();
+        registrationDto.setZip("1234");
+
+        String keyMessageError = "zip-length-min";
+        checkErrorServiceAddNewAccount(registrationDto, keyMessageError);
+    }
+
+    @Test
+    public void givenMoreThan5NumberZipCodeErrorShouldThrow() {
+        RegistrationDto registrationDto = getRegistrationDto();
+        registrationDto.setZip("123456");
+
+        String keyMessageError = "zip-length-min";
+        checkErrorServiceAddNewAccount(registrationDto, keyMessageError);
+    }
+
+    @Test
+    public void securityQuestionMustBeRequired() {
+        RegistrationDto registrationDto = getRegistrationDto();
+        registrationDto.setSecurityQuestion("");
+
+        String keyMessageError = "security.question.required";
+        checkErrorServiceAddNewAccount(registrationDto, keyMessageError);
+    }
+
+    @Test
+    public void securityAnswerMustBeRequired() {
+        RegistrationDto registrationDto = getRegistrationDto();
+        registrationDto.setSecurityAnswer("");
+
+        String keyMessageError = "security.answer.required";
+        checkErrorServiceAddNewAccount(registrationDto, keyMessageError);
+    }
+
+    @Test
+    public void securityAnswerMustBeAlphanumeric() {
+        RegistrationDto registrationDto = getRegistrationDto();
+        registrationDto.setSecurityAnswer("");
+
+        String keyMessageError = "security.answer.alphanumeric";
+        checkErrorServiceAddNewAccount(registrationDto, keyMessageError);
+    }
+
+    @Test
+    public void securityAnswerMustaveLessThan255Chars() {
+        RegistrationDto registrationDto = getRegistrationDto();
+        String addressMoreThan255Chars = new String(new char[256]).replace('\0', 'A');
+        registrationDto.setSecurityAnswer(addressMoreThan255Chars);
+
+        String keyMessageError = "security.answer.length-max";
+        checkErrorServiceAddNewAccount(registrationDto, keyMessageError);
+    }
+
+    @Test
+    public void createNewAccount() throws PortalException {
+        RegistrationDto registrationDto = getRegistrationDto();
+
+        //Unique user name
+        long companyId = registrationDto.getCompanyId();
+        String username = registrationDto.getUsername();
+        Mockito.when(userLocalService.getUserByScreenName(companyId, username)).thenThrow(PortalException.class);
+
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(registrationDto.getBirthdayDate());
+        int birthdayDay = cal.get(Calendar.DAY_OF_MONTH);
+        int birthdayMonth = cal.get(Calendar.MONTH);
+        int birthdayYear = cal.get(Calendar.YEAR);
+
+        Mockito.when(userLocalService.addUser(0,
+                registrationDto.getCompanyId(),
+                false,
+                registrationDto.getPassword(),
+                registrationDto.getPassword2(),
+                false,
+                registrationDto.getUsername(),
+                registrationDto.getEmailAddress(),
+                0,
+                null,
+                registrationDto.getLocale(),
+                registrationDto.getFirstName(),
+                null,
+                registrationDto.getLastName(),
+                0,
+                0,
+                true,
+                birthdayMonth, birthdayDay, birthdayYear,
+                null, null, null,
+                null, null, false, null)).thenReturn(_user);
+
+
+        _amfRegistrationLocalServiceImpl.addNewAccount(registrationDto);
     }
 
     private void checkErrorServiceAddNewAccount(RegistrationDto registrationDto, String keyMessageError) {
@@ -239,8 +450,8 @@ public class AmfRegistrationLocalServiceImplTest {
 
     private RegistrationDto getRegistrationDto(){
         RegistrationDto registrationDto = new RegistrationDto();
-        registrationDto.setFirstName("First-name");
-        registrationDto.setLastName("Last-name");
+        registrationDto.setFirstName("FirstName");
+        registrationDto.setLastName("LastName");
         registrationDto.setEmailAddress("test-dev@liferay.com");
         registrationDto.setUsername("test");
         registrationDto.setGender(1);
@@ -262,6 +473,7 @@ public class AmfRegistrationLocalServiceImplTest {
         registrationDto.setAcceptedTou(true);
 
         registrationDto.setCompanyId(1234l);
+        registrationDto.setLocale(Locale.US);
 
         return registrationDto;
     }

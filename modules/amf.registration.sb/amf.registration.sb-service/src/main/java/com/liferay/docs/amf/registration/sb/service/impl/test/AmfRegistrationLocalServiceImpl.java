@@ -26,7 +26,6 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Contact;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ServiceContext;
-import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.math.BigInteger;
@@ -43,7 +42,9 @@ import java.util.regex.Pattern;
 
 public class AmfRegistrationLocalServiceImpl extends AmfRegistrationLocalServiceBaseImpl {
 
+	private ServiceContext serviceContext;
 	private List<String> errors = null;
+
 	public static final long MOBILE_PHONE = 11008;
 	public static final long HOME_PHONE = 11011;
 
@@ -51,7 +52,7 @@ public class AmfRegistrationLocalServiceImpl extends AmfRegistrationLocalService
 	public static final String COUNT_USERS_BY_ZIP_CODE = "countUsersByZipCode";
 
 	public AmfRegistrationLocalServiceImpl(){
-		errors = new ArrayList<String>();
+		errors = new ArrayList<>();
 	}
 
 	@Override
@@ -79,17 +80,28 @@ public class AmfRegistrationLocalServiceImpl extends AmfRegistrationLocalService
 		int birthdayDay = cal.get(Calendar.DAY_OF_MONTH);
 		int birthdayMonth = cal.get(Calendar.MONTH);
 		int birthdayYear = cal.get(Calendar.YEAR);
+		boolean male = registrationDto.getGender() == 1;
 
-		User user = userLocalService.addUser(
-				0, registrationDto.getCompanyId(), false,
-				registrationDto.getPassword(), registrationDto.getPassword2(),
-				false, registrationDto.getUsername(),
-				registrationDto.getEmailAddress(),0,
-				null, registrationDto.getLocale(), registrationDto.getFirstName(), null,registrationDto.getLastName(),
-				0, 0, "Male".equals(registrationDto.getGender()),
+		User user = userLocalService.addUser(0,
+				registrationDto.getCompanyId(),
+				false,
+				registrationDto.getPassword(),
+				registrationDto.getPassword2(),
+				false,
+				registrationDto.getUsername(),
+				registrationDto.getEmailAddress(),
+				0,
+				null,
+				registrationDto.getLocale(),
+				registrationDto.getFirstName(),
+				null,
+				registrationDto.getLastName(),
+				0,
+				0,
+				male,
 				birthdayMonth, birthdayDay, birthdayYear,
 				null, null, null,
-				null, null, false, new ServiceContext());
+				null, null, false, getServiceContext());
 
 		userLocalService.updateReminderQuery(user.getUserId(), registrationDto.getSecurityQuestion(), registrationDto.getSecurityAnswer());
 		userLocalService.updateAgreedToTermsOfUse(user.getUserId(), registrationDto.getAcceptedTou());
@@ -102,18 +114,18 @@ public class AmfRegistrationLocalServiceImpl extends AmfRegistrationLocalService
 				user.getContactId(), registrationDto.getAddress(), registrationDto.getAddress2(),
 				null, registrationDto.getCity(), registrationDto.getZip(),
 				registrationDto.getState(), countryId, typeId, mailing,
-				true, new ServiceContext());
+				true, getServiceContext());
 
 		//List<ListType> phoneTypes = ListTypeServiceUtil.getListTypes(Contact.class.getName() + ListTypeConstants.PHONE);
 		if(Validator.isNotNull(registrationDto.getHomePhone())) {
 			phoneLocalService.addPhone(user.getUserId(), Contact.class.getName(),
 					user.getContactId(), registrationDto.getHomePhone(), null,
-					HOME_PHONE, true, new ServiceContext());
+					HOME_PHONE, true, getServiceContext());
 		}
 		if(Validator.isNotNull(registrationDto.getMobilePhone())) {
 			phoneLocalService.addPhone(user.getUserId(), Contact.class.getName(),
 					user.getContactId(), registrationDto.getMobilePhone(), null,
-					MOBILE_PHONE, false, new ServiceContext());
+					MOBILE_PHONE, false, getServiceContext());
 		}
 	}
 
@@ -164,7 +176,7 @@ public class AmfRegistrationLocalServiceImpl extends AmfRegistrationLocalService
 	}
 
 	private void validateZipCode(String zip) {
-		if(isLengthReached(zip, 5)){
+		if(!validateZip(zip)){
 			errors.add("zip-length-min");
 		}
 	}
@@ -405,5 +417,13 @@ public class AmfRegistrationLocalServiceImpl extends AmfRegistrationLocalService
 		}
 
 		return usersDTO;
+	}
+
+	public ServiceContext getServiceContext() {
+		return serviceContext;
+	}
+
+	public void setServiceContext(ServiceContext serviceContext) {
+		this.serviceContext = serviceContext;
 	}
 }
