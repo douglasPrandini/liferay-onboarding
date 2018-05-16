@@ -51,12 +51,12 @@ public class AmfRegistrationLocalServiceImpl extends AmfRegistrationLocalService
 	public static final String FIND_USERS_BY_ZIP_CODE = "findUsersByZipCode";
 	public static final String COUNT_USERS_BY_ZIP_CODE = "countUsersByZipCode";
 
-	private AssessorUserLocalService _acessorUserLocalService;
+	private AssessorUserLocalService _assessorUserLocalService;
 
 	public AmfRegistrationLocalServiceImpl() {
 		errors = new ArrayList<>();
 
-        _acessorUserLocalService = new AssessorUserLocalService(userLocalService);
+        _assessorUserLocalService = new AssessorUserLocalService(userLocalService);
 	}
 
 	@Override
@@ -79,7 +79,7 @@ public class AmfRegistrationLocalServiceImpl extends AmfRegistrationLocalService
 
 	private void createNewAccount(RegistrationDto registrationDto) throws PortalException {
 
-	    User user = _acessorUserLocalService.addUser(registrationDto);
+	    User user = _assessorUserLocalService.addUser(registrationDto);
 		userLocalService.updateReminderQuery(user.getUserId(), registrationDto.getSecurityQuestion(), registrationDto.getSecurityAnswer());
 		userLocalService.updateAgreedToTermsOfUse(user.getUserId(), registrationDto.getAcceptedTou());
 
