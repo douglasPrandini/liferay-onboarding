@@ -23,7 +23,9 @@ import com.liferay.docs.amf.registration.sb.dto.UserDTO;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.service.BaseLocalService;
+import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.transaction.Isolation;
+import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
 
 import java.util.List;
@@ -49,6 +51,9 @@ public interface AmfRegistrationLocalService extends BaseLocalService {
 	 *
 	 * Never modify or reference this interface directly. Always use {@link AmfRegistrationLocalServiceUtil} to access the amf registration local service. Add custom service methods to {@link com.liferay.docs.amf.registration.sb.service.impl.AmfRegistrationLocalServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public ServiceContext getServiceContext();
+
 	public int countByUsersByZip(int zipCode);
 
 	/**
@@ -62,4 +67,6 @@ public interface AmfRegistrationLocalService extends BaseLocalService {
 
 	public void addNewAccount(RegistrationDto registrationDto)
 		throws RegistrationPortalException;
+
+	public void setServiceContext(ServiceContext serviceContext);
 }

@@ -47,6 +47,7 @@ public class GuestBookPortlet extends MVCPortlet {
 		if (guestbookEntries[0] != null) {
 			List<Entry> entries = parseEntries(guestbookEntries);
 			renderRequest.setAttribute("entries", entries);
+
 		}
 
 		super.render(renderRequest, renderResponse);

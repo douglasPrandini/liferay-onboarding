@@ -41,6 +41,10 @@ public class AmfRegistrationLocalServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.docs.amf.registration.sb.service.impl.AmfRegistrationLocalServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
+	public static com.liferay.portal.kernel.service.ServiceContext getServiceContext() {
+		return getService().getServiceContext();
+	}
+
 	public static int countByUsersByZip(int zipCode) {
 		return getService().countByUsersByZip(zipCode);
 	}
@@ -63,6 +67,11 @@ public class AmfRegistrationLocalServiceUtil {
 		com.liferay.docs.amf.registration.sb.dto.RegistrationDto registrationDto)
 		throws com.liferay.docs.amf.registration.sb.custom.exceptions.RegistrationPortalException {
 		getService().addNewAccount(registrationDto);
+	}
+
+	public static void setServiceContext(
+		com.liferay.portal.kernel.service.ServiceContext serviceContext) {
+		getService().setServiceContext(serviceContext);
 	}
 
 	public static AmfRegistrationLocalService getService() {

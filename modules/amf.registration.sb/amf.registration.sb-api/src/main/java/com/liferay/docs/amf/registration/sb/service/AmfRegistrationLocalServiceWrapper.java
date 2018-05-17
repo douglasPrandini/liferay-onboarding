@@ -35,6 +35,11 @@ public class AmfRegistrationLocalServiceWrapper
 	}
 
 	@Override
+	public com.liferay.portal.kernel.service.ServiceContext getServiceContext() {
+		return _amfRegistrationLocalService.getServiceContext();
+	}
+
+	@Override
 	public int countByUsersByZip(int zipCode) {
 		return _amfRegistrationLocalService.countByUsersByZip(zipCode);
 	}
@@ -60,6 +65,12 @@ public class AmfRegistrationLocalServiceWrapper
 		com.liferay.docs.amf.registration.sb.dto.RegistrationDto registrationDto)
 		throws com.liferay.docs.amf.registration.sb.custom.exceptions.RegistrationPortalException {
 		_amfRegistrationLocalService.addNewAccount(registrationDto);
+	}
+
+	@Override
+	public void setServiceContext(
+		com.liferay.portal.kernel.service.ServiceContext serviceContext) {
+		_amfRegistrationLocalService.setServiceContext(serviceContext);
 	}
 
 	@Override
