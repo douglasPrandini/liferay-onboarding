@@ -56,6 +56,4 @@ public interface AmfRegistrationService extends BaseService {
 	* @return the OSGi service identifier
 	*/
 	public java.lang.String getOSGiServiceIdentifier();
-
-	public void doNothing();
 }

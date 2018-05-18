@@ -51,10 +51,6 @@ public class AmfRegistrationServiceUtil {
 		return getService().getOSGiServiceIdentifier();
 	}
 
-	public static void doNothing() {
-		getService().doNothing();
-	}
-
 	public static AmfRegistrationService getService() {
 		return _serviceTracker.getService();
 	}

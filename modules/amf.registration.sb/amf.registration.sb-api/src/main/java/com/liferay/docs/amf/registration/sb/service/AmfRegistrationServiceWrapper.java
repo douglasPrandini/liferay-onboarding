@@ -44,11 +44,6 @@ public class AmfRegistrationServiceWrapper implements AmfRegistrationService,
 	}
 
 	@Override
-	public void doNothing() {
-		_amfRegistrationService.doNothing();
-	}
-
-	@Override
 	public AmfRegistrationService getWrappedService() {
 		return _amfRegistrationService;
 	}

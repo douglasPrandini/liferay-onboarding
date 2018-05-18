@@ -16,16 +16,9 @@ package com.liferay.docs.amf.registration.sb.service.http;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.docs.amf.registration.sb.service.AmfRegistrationServiceUtil;
-
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
-
-import java.rmi.RemoteException;
-
 /**
  * Provides the SOAP utility for the
- * {@link AmfRegistrationServiceUtil} service utility. The
+ * {@link com.liferay.docs.amf.registration.sb.service.AmfRegistrationServiceUtil} service utility. The
  * static methods of this class calls the same methods of the service utility.
  * However, the signatures are different because it is difficult for SOAP to
  * support certain types.
@@ -60,21 +53,9 @@ import java.rmi.RemoteException;
  * @author Brian Wing Shun Chan
  * @see AmfRegistrationServiceHttp
  * @see com.liferay.docs.amf.registration.sb.model.AmfRegistrationSoap
- * @see AmfRegistrationServiceUtil
+ * @see com.liferay.docs.amf.registration.sb.service.AmfRegistrationServiceUtil
  * @generated
  */
 @ProviderType
 public class AmfRegistrationServiceSoap {
-	public static void doNothing() throws RemoteException {
-		try {
-			AmfRegistrationServiceUtil.doNothing();
-		}
-		catch (Exception e) {
-			_log.error(e, e);
-
-			throw new RemoteException(e.getMessage());
-		}
-	}
-
-	private static Log _log = LogFactoryUtil.getLog(AmfRegistrationServiceSoap.class);
 }

@@ -52,7 +52,7 @@ public class AmfRegistrationAuditLogServiceImpl
 		if(hasPermissionVIEW_ALL_USER_EVENTS(serviceContext)) {
 			return amfRegistrationAuditLogLocalService.getAmfRegistrationAuditLogs(start, end);
 		} else {
-			return amfRegistrationAuditLogPersistence.findByuser_id(serviceContext.getGuestOrUserId(), start, end);
+			return amfRegistrationAuditLogPersistence.findByuser_id(serviceContext.getUserId(), start, end);
 		}
 	}
 
@@ -60,7 +60,7 @@ public class AmfRegistrationAuditLogServiceImpl
 		if(hasPermissionVIEW_ALL_USER_EVENTS(serviceContext)) {
 			return amfRegistrationAuditLogPersistence.findByevent_type(ActionType.REGISTRATION.toString(), start, end);
 		} else {
-			return amfRegistrationAuditLogPersistence.findByEventTypeAndUserId(ActionType.REGISTRATION.toString(), serviceContext.getGuestOrUserId(), start, end);
+			return amfRegistrationAuditLogPersistence.findByEventTypeAndUserId(ActionType.REGISTRATION.toString(), serviceContext.getUserId(), start, end);
 		}
 	}
 
@@ -70,7 +70,7 @@ public class AmfRegistrationAuditLogServiceImpl
 			return amfRegistrationAuditLogPersistence.findByevent_type(loginLogout , start, end);
 		} else {
 			String[] loginLogout = {ActionType.LOGIN.toString(), ActionType.LOGOUT.toString()};
-			return amfRegistrationAuditLogPersistence.findByEventTypeAndUserId(loginLogout, serviceContext.getGuestOrUserId(), start, end);
+			return amfRegistrationAuditLogPersistence.findByEventTypeAndUserId(loginLogout, serviceContext.getUserId(), start, end);
 		}
 	}
 
@@ -78,7 +78,7 @@ public class AmfRegistrationAuditLogServiceImpl
 		if(hasPermissionVIEW_ALL_USER_EVENTS(serviceContext)) {
 			return amfRegistrationAuditLogLocalService.getAmfRegistrationAuditLogsCount();
 		} else {
-			return amfRegistrationAuditLogPersistence.countByuser_id(serviceContext.getGuestOrUserId());
+			return amfRegistrationAuditLogPersistence.countByuser_id(serviceContext.getUserId());
 		}
 	}
 
@@ -86,7 +86,7 @@ public class AmfRegistrationAuditLogServiceImpl
 		if(hasPermissionVIEW_ALL_USER_EVENTS(serviceContext)) {
 			return amfRegistrationAuditLogPersistence.countByevent_type(ActionType.REGISTRATION.toString());
 		} else {
-			return amfRegistrationAuditLogPersistence.countByEventTypeAndUserId(ActionType.REGISTRATION.toString(), serviceContext.getGuestOrUserId());
+			return amfRegistrationAuditLogPersistence.countByEventTypeAndUserId(ActionType.REGISTRATION.toString(), serviceContext.getUserId());
 		}
 	}
 
@@ -96,7 +96,7 @@ public class AmfRegistrationAuditLogServiceImpl
 			return amfRegistrationAuditLogPersistence.countByevent_type(loginLogout);
 		} else {
 			String[] loginLogout = {ActionType.LOGIN.toString(), ActionType.LOGOUT.toString()};
-			return amfRegistrationAuditLogPersistence.countByEventTypeAndUserId(loginLogout, serviceContext.getGuestOrUserId());
+			return amfRegistrationAuditLogPersistence.countByEventTypeAndUserId(loginLogout, serviceContext.getUserId());
 		}
 	}
 
