@@ -19,6 +19,8 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.docs.amf.registration.sb.model.AmfRegistrationAuditLog;
 import com.liferay.docs.amf.registration.sb.service.AmfRegistrationAuditLogLocalService;
 import com.liferay.docs.amf.registration.sb.service.persistence.AmfRegistrationAuditLogPersistence;
+import com.liferay.docs.amf.registration.sb.service.persistence.AmfRegistrationFinder;
+import com.liferay.docs.amf.registration.sb.service.persistence.AmfRegistrationPersistence;
 
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.db.DB;
@@ -337,6 +339,44 @@ public abstract class AmfRegistrationAuditLogLocalServiceBaseImpl
 	}
 
 	/**
+	 * Returns the amf registration persistence.
+	 *
+	 * @return the amf registration persistence
+	 */
+	public AmfRegistrationPersistence getAmfRegistrationPersistence() {
+		return amfRegistrationPersistence;
+	}
+
+	/**
+	 * Sets the amf registration persistence.
+	 *
+	 * @param amfRegistrationPersistence the amf registration persistence
+	 */
+	public void setAmfRegistrationPersistence(
+		AmfRegistrationPersistence amfRegistrationPersistence) {
+		this.amfRegistrationPersistence = amfRegistrationPersistence;
+	}
+
+	/**
+	 * Returns the amf registration finder.
+	 *
+	 * @return the amf registration finder
+	 */
+	public AmfRegistrationFinder getAmfRegistrationFinder() {
+		return amfRegistrationFinder;
+	}
+
+	/**
+	 * Sets the amf registration finder.
+	 *
+	 * @param amfRegistrationFinder the amf registration finder
+	 */
+	public void setAmfRegistrationFinder(
+		AmfRegistrationFinder amfRegistrationFinder) {
+		this.amfRegistrationFinder = amfRegistrationFinder;
+	}
+
+	/**
 	 * Returns the amf registration audit log local service.
 	 *
 	 * @return the amf registration audit log local service
@@ -541,6 +581,10 @@ public abstract class AmfRegistrationAuditLogLocalServiceBaseImpl
 
 	@BeanReference(type = com.liferay.docs.amf.registration.sb.service.AmfRegistrationLocalService.class)
 	protected com.liferay.docs.amf.registration.sb.service.AmfRegistrationLocalService amfRegistrationLocalService;
+	@BeanReference(type = AmfRegistrationPersistence.class)
+	protected AmfRegistrationPersistence amfRegistrationPersistence;
+	@BeanReference(type = AmfRegistrationFinder.class)
+	protected AmfRegistrationFinder amfRegistrationFinder;
 	@BeanReference(type = AmfRegistrationAuditLogLocalService.class)
 	protected AmfRegistrationAuditLogLocalService amfRegistrationAuditLogLocalService;
 	@BeanReference(type = AmfRegistrationAuditLogPersistence.class)

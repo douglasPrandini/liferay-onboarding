@@ -18,11 +18,13 @@ import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.docs.amf.registration.sb.model.AmfRegistrationAuditLog;
 import com.liferay.docs.amf.registration.sb.model.AmfRegistrationAuditLogModel;
+import com.liferay.docs.amf.registration.sb.model.AmfRegistrationAuditLogSoap;
 
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
+import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.service.ServiceContext;
@@ -36,8 +38,10 @@ import java.io.Serializable;
 
 import java.sql.Types;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -53,6 +57,7 @@ import java.util.Map;
  * @see AmfRegistrationAuditLogModel
  * @generated
  */
+@JSON(strict = true)
 @ProviderType
 public class AmfRegistrationAuditLogModelImpl extends BaseModelImpl<AmfRegistrationAuditLog>
 	implements AmfRegistrationAuditLogModel {
@@ -101,6 +106,52 @@ public class AmfRegistrationAuditLogModelImpl extends BaseModelImpl<AmfRegistrat
 	public static final long SCREEN_NAME_COLUMN_BITMASK = 2L;
 	public static final long USER_ID_COLUMN_BITMASK = 4L;
 	public static final long ACTION_TIME_COLUMN_BITMASK = 8L;
+
+	/**
+	 * Converts the soap model instance into a normal model instance.
+	 *
+	 * @param soapModel the soap model instance to convert
+	 * @return the normal model instance
+	 */
+	public static AmfRegistrationAuditLog toModel(
+		AmfRegistrationAuditLogSoap soapModel) {
+		if (soapModel == null) {
+			return null;
+		}
+
+		AmfRegistrationAuditLog model = new AmfRegistrationAuditLogImpl();
+
+		model.setId(soapModel.getId());
+		model.setAction_time(soapModel.getAction_time());
+		model.setScreen_name(soapModel.getScreen_name());
+		model.setUser_id(soapModel.getUser_id());
+		model.setIp_address(soapModel.getIp_address());
+		model.setEvent_type(soapModel.getEvent_type());
+
+		return model;
+	}
+
+	/**
+	 * Converts the soap model instances into normal model instances.
+	 *
+	 * @param soapModels the soap model instances to convert
+	 * @return the normal model instances
+	 */
+	public static List<AmfRegistrationAuditLog> toModels(
+		AmfRegistrationAuditLogSoap[] soapModels) {
+		if (soapModels == null) {
+			return null;
+		}
+
+		List<AmfRegistrationAuditLog> models = new ArrayList<AmfRegistrationAuditLog>(soapModels.length);
+
+		for (AmfRegistrationAuditLogSoap soapModel : soapModels) {
+			models.add(toModel(soapModel));
+		}
+
+		return models;
+	}
+
 	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.docs.amf.registration.sb.service.util.ServiceProps.get(
 				"lock.expiration.time.com.liferay.docs.amf.registration.sb.model.AmfRegistrationAuditLog"));
 
@@ -193,6 +244,7 @@ public class AmfRegistrationAuditLogModelImpl extends BaseModelImpl<AmfRegistrat
 		}
 	}
 
+	@JSON
 	@Override
 	public long getId() {
 		return _id;
@@ -203,6 +255,7 @@ public class AmfRegistrationAuditLogModelImpl extends BaseModelImpl<AmfRegistrat
 		_id = id;
 	}
 
+	@JSON
 	@Override
 	public Date getAction_time() {
 		return _action_time;
@@ -215,6 +268,7 @@ public class AmfRegistrationAuditLogModelImpl extends BaseModelImpl<AmfRegistrat
 		_action_time = action_time;
 	}
 
+	@JSON
 	@Override
 	public String getScreen_name() {
 		if (_screen_name == null) {
@@ -240,6 +294,7 @@ public class AmfRegistrationAuditLogModelImpl extends BaseModelImpl<AmfRegistrat
 		return GetterUtil.getString(_originalScreen_name);
 	}
 
+	@JSON
 	@Override
 	public long getUser_id() {
 		return _user_id;
@@ -262,6 +317,7 @@ public class AmfRegistrationAuditLogModelImpl extends BaseModelImpl<AmfRegistrat
 		return _originalUser_id;
 	}
 
+	@JSON
 	@Override
 	public String getIp_address() {
 		if (_ip_address == null) {
@@ -277,6 +333,7 @@ public class AmfRegistrationAuditLogModelImpl extends BaseModelImpl<AmfRegistrat
 		_ip_address = ip_address;
 	}
 
+	@JSON
 	@Override
 	public String getEvent_type() {
 		if (_event_type == null) {

@@ -1,3 +1,7 @@
+create table AMF_AmfRegistration (
+	dummy LONG not null primary key
+);
+
 create table amf_registration_audit_log (
 	id LONG not null primary key,
 	action_time DATE null,

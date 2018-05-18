@@ -1,6 +1,9 @@
 <?xml version="1.0"?>
 
 <model-hints>
+	<model name="com.liferay.docs.amf.registration.sb.model.AmfRegistration">
+		<field name="dummy" type="long" />
+	</model>
 	<model name="com.liferay.docs.amf.registration.sb.model.AmfRegistrationAuditLog">
 		<field name="id" type="long" />
 		<field name="action_time" type="Date" />

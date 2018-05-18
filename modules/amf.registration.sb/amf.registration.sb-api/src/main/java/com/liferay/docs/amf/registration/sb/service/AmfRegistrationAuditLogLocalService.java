@@ -30,7 +30,6 @@ import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalService;
 import com.liferay.portal.kernel.service.PersistedModelLocalService;
-import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
@@ -62,9 +61,6 @@ public interface AmfRegistrationAuditLogLocalService extends BaseLocalService,
 	 *
 	 * Never modify or reference this interface directly. Always use {@link AmfRegistrationAuditLogLocalServiceUtil} to access the amf registration audit log local service. Add custom service methods to {@link com.liferay.docs.amf.registration.sb.service.impl.AmfRegistrationAuditLogLocalServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public boolean hasPermissionVIEW_ALL_USER_EVENTS(
-		ServiceContext serviceContext);
 
 	/**
 	* Adds the amf registration audit log to the database. Also notifies the appropriate model listeners.
@@ -149,15 +145,6 @@ public interface AmfRegistrationAuditLogLocalService extends BaseLocalService,
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
 		throws PortalException;
 
-	public int countByLoginLogout(ServiceContext serviceContext)
-		throws PortalException;
-
-	public int countByRegistration(ServiceContext serviceContext)
-		throws PortalException;
-
-	public int countUsers(ServiceContext serviceContext)
-		throws PortalException;
-
 	/**
 	* Returns the number of amf registration audit logs.
 	*
@@ -211,18 +198,6 @@ public interface AmfRegistrationAuditLogLocalService extends BaseLocalService,
 	*/
 	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
 		int end, OrderByComparator<T> orderByComparator);
-
-	public List<AmfRegistrationAuditLog> findByLoginLogout(
-		ServiceContext serviceContext, int start, int end)
-		throws PortalException;
-
-	public List<AmfRegistrationAuditLog> findByRegistration(
-		ServiceContext serviceContext, int start, int end)
-		throws PortalException;
-
-	public List<AmfRegistrationAuditLog> findUsers(
-		ServiceContext serviceContext, int start, int end)
-		throws PortalException;
 
 	/**
 	* Returns a range of all the amf registration audit logs.

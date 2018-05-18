@@ -19,10 +19,6 @@ import com.liferay.docs.amf.registration.sb.dto.RegistrationDto;
 import com.liferay.docs.amf.registration.sb.dto.UserDTO;
 import com.liferay.docs.amf.registration.sb.service.base.AmfRegistrationLocalServiceBaseImpl;
 import com.liferay.docs.amf.registration.sb.service.liferay.services.acessor.AssessorUserLocalService;
-import com.liferay.portal.dao.orm.custom.sql.CustomSQLUtil;
-import com.liferay.portal.kernel.dao.orm.QueryPos;
-import com.liferay.portal.kernel.dao.orm.SQLQuery;
-import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Contact;
 import com.liferay.portal.kernel.model.User;
@@ -318,61 +314,16 @@ public class AmfRegistrationLocalServiceImpl extends AmfRegistrationLocalService
 		return Validator.isBlank(s);
 	}
 
-	public List<UserDTO> findByUsersByZip(int zipCode, int start, int end) {
-		if(!validateZip(String.valueOf(zipCode))){
-			return new ArrayList<>();
-		}
-
-		Session session = null;
-		try {
-			session = amfRegistrationAuditLogPersistence.openSession();
-			String sql = CustomSQLUtil.get(getClass(),FIND_USERS_BY_ZIP_CODE);
-
-			SQLQuery queryObject = session.createSQLQuery(sql);
-			queryObject.setCacheable(false);
-			//queryObject.addEntity("User_", User.class);
-
-			QueryPos qPos = QueryPos.getInstance(queryObject);
-			qPos.add(zipCode);
-
-			//Pagination
-			qPos.add(start);
-			qPos.add(end);
-
-			List<Object[]> returnedList = (List<Object[]>)queryObject.list();
-
-			return transformDTO(returnedList);
-		} catch (Exception e) {
-			throw e;
-		} finally {
-			amfRegistrationAuditLogPersistence.closeSession(session);
-		}
-	}
-
-	private boolean validateZip(String s) {
+		private boolean validateZip(String s) {
 		return s.length() == 5;
 	}
 
 	public int countByUsersByZip(int zipCode) {
-		Session session = null;
-		try {
-			session = amfRegistrationAuditLogPersistence.openSession();
-			String sql = CustomSQLUtil.get(getClass(), COUNT_USERS_BY_ZIP_CODE);
+		return amfRegistrationFinder.countByUsersByZip(zipCode);
+	}
 
-			SQLQuery queryObject = session.createSQLQuery(sql);
-			queryObject.setCacheable(false);
-
-			QueryPos qPos = QueryPos.getInstance(queryObject);
-			qPos.add(zipCode);
-
-			BigInteger total = (BigInteger)queryObject.uniqueResult();
-			return total.intValue();
-
-		} catch (Exception e) {
-			throw e;
-		} finally {
-			amfRegistrationAuditLogPersistence.closeSession(session);
-		}
+	public List<UserDTO> findByUsersByZip(int zipCode, int start, int end) {
+		return transformDTO(amfRegistrationFinder.findByUsersByZip(zipCode, start, end));
 	}
 
 	private List<UserDTO> transformDTO(List<Object[]> returnedList) {
@@ -396,15 +347,13 @@ public class AmfRegistrationLocalServiceImpl extends AmfRegistrationLocalService
 		return usersDTO;
 	}
 
+	//create to inject mock for unit test
 	public ServiceContext getServiceContext() {
 		return serviceContext;
 	}
-
 	public void setServiceContext(ServiceContext serviceContext) {
 		this.serviceContext = serviceContext;
 	}
-
-	//create to inject mock for unit test
 	public void setAssessorUserLocalService(AssessorUserLocalService assessorUserLocalService) {
 		_assessorUserLocalService = assessorUserLocalService;
 	}

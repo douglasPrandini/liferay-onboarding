@@ -5,13 +5,15 @@
 	<namespace>AMF</namespace>
 
 	<entity local-service="true" remote-service="true" name="AmfRegistration">
+
+		<column db-name="dummy" name="dummy" type="long" primary="true" />
+
 		<reference entity="User" package-path="com.liferay.portal" />
 		<reference entity="Address" package-path="com.liferay.portal" />
 		<reference entity="Phone" package-path="com.liferay.portal" />
-
 	</entity>
 
-	<entity name="AmfRegistrationAuditLog" table="amf_registration_audit_log" local-service="true" remote-service="false" uuid="false">
+	<entity name="AmfRegistrationAuditLog" table="amf_registration_audit_log" local-service="true" remote-service="true" uuid="false">
 		<column db-name="id" name="id" type="long" primary="true" id-type="increment"/>
 		<column db-name="action_time" name="action_time" type="Date" />
 		<column db-name="screen_name" name="screen_name" type="String" />

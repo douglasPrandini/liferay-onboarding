@@ -41,10 +41,6 @@ public class AmfRegistrationAuditLogLocalServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.docs.amf.registration.sb.service.impl.AmfRegistrationAuditLogLocalServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static boolean hasPermissionVIEW_ALL_USER_EVENTS(
-		com.liferay.portal.kernel.service.ServiceContext serviceContext) {
-		return getService().hasPermissionVIEW_ALL_USER_EVENTS(serviceContext);
-	}
 
 	/**
 	* Adds the amf registration audit log to the database. Also notifies the appropriate model listeners.
@@ -148,24 +144,6 @@ public class AmfRegistrationAuditLogLocalServiceUtil {
 		return getService().getPersistedModel(primaryKeyObj);
 	}
 
-	public static int countByLoginLogout(
-		com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().countByLoginLogout(serviceContext);
-	}
-
-	public static int countByRegistration(
-		com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().countByRegistration(serviceContext);
-	}
-
-	public static int countUsers(
-		com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().countUsers(serviceContext);
-	}
-
 	/**
 	* Returns the number of amf registration audit logs.
 	*
@@ -232,27 +210,6 @@ public class AmfRegistrationAuditLogLocalServiceUtil {
 		com.liferay.portal.kernel.util.OrderByComparator<T> orderByComparator) {
 		return getService()
 				   .dynamicQuery(dynamicQuery, start, end, orderByComparator);
-	}
-
-	public static java.util.List<com.liferay.docs.amf.registration.sb.model.AmfRegistrationAuditLog> findByLoginLogout(
-		com.liferay.portal.kernel.service.ServiceContext serviceContext,
-		int start, int end)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().findByLoginLogout(serviceContext, start, end);
-	}
-
-	public static java.util.List<com.liferay.docs.amf.registration.sb.model.AmfRegistrationAuditLog> findByRegistration(
-		com.liferay.portal.kernel.service.ServiceContext serviceContext,
-		int start, int end)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().findByRegistration(serviceContext, start, end);
-	}
-
-	public static java.util.List<com.liferay.docs.amf.registration.sb.model.AmfRegistrationAuditLog> findUsers(
-		com.liferay.portal.kernel.service.ServiceContext serviceContext,
-		int start, int end)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().findUsers(serviceContext, start, end);
 	}
 
 	/**

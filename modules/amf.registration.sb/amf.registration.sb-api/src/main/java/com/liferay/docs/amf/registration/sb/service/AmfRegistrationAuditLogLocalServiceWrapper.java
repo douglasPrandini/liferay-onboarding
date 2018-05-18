@@ -34,12 +34,6 @@ public class AmfRegistrationAuditLogLocalServiceWrapper
 		_amfRegistrationAuditLogLocalService = amfRegistrationAuditLogLocalService;
 	}
 
-	@Override
-	public boolean hasPermissionVIEW_ALL_USER_EVENTS(
-		com.liferay.portal.kernel.service.ServiceContext serviceContext) {
-		return _amfRegistrationAuditLogLocalService.hasPermissionVIEW_ALL_USER_EVENTS(serviceContext);
-	}
-
 	/**
 	* Adds the amf registration audit log to the database. Also notifies the appropriate model listeners.
 	*
@@ -152,27 +146,6 @@ public class AmfRegistrationAuditLogLocalServiceWrapper
 		return _amfRegistrationAuditLogLocalService.getPersistedModel(primaryKeyObj);
 	}
 
-	@Override
-	public int countByLoginLogout(
-		com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _amfRegistrationAuditLogLocalService.countByLoginLogout(serviceContext);
-	}
-
-	@Override
-	public int countByRegistration(
-		com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _amfRegistrationAuditLogLocalService.countByRegistration(serviceContext);
-	}
-
-	@Override
-	public int countUsers(
-		com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _amfRegistrationAuditLogLocalService.countUsers(serviceContext);
-	}
-
 	/**
 	* Returns the number of amf registration audit logs.
 	*
@@ -245,33 +218,6 @@ public class AmfRegistrationAuditLogLocalServiceWrapper
 		com.liferay.portal.kernel.util.OrderByComparator<T> orderByComparator) {
 		return _amfRegistrationAuditLogLocalService.dynamicQuery(dynamicQuery,
 			start, end, orderByComparator);
-	}
-
-	@Override
-	public java.util.List<com.liferay.docs.amf.registration.sb.model.AmfRegistrationAuditLog> findByLoginLogout(
-		com.liferay.portal.kernel.service.ServiceContext serviceContext,
-		int start, int end)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _amfRegistrationAuditLogLocalService.findByLoginLogout(serviceContext,
-			start, end);
-	}
-
-	@Override
-	public java.util.List<com.liferay.docs.amf.registration.sb.model.AmfRegistrationAuditLog> findByRegistration(
-		com.liferay.portal.kernel.service.ServiceContext serviceContext,
-		int start, int end)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _amfRegistrationAuditLogLocalService.findByRegistration(serviceContext,
-			start, end);
-	}
-
-	@Override
-	public java.util.List<com.liferay.docs.amf.registration.sb.model.AmfRegistrationAuditLog> findUsers(
-		com.liferay.portal.kernel.service.ServiceContext serviceContext,
-		int start, int end)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _amfRegistrationAuditLogLocalService.findUsers(serviceContext,
-			start, end);
 	}
 
 	/**
