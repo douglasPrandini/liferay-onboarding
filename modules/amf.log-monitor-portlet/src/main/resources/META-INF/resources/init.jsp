@@ -10,3 +10,12 @@ taglib uri="http://liferay.com/tld/ui" prefix="liferay-ui" %>
 
 <liferay-theme:defineObjects />
 <portlet:defineObjects />
+
+<%@ page import="java.text.SimpleDateFormat" %>
+<%@ page import="java.util.List" %>
+<%@ page import="com.liferay.portal.kernel.util.ListUtil" %>
+<%@ page import="com.liferay.docs.amf.registration.sb.model.AmfRegistrationAuditLog" %>
+<%@ page import="com.liferay.portal.kernel.model.User" %>
+<%@ page import="com.liferay.docs.amf.registration.sb.service.AmfRegistrationAuditLogLocalServiceUtil" %>
+<%@ page import="com.liferay.portal.kernel.service.ServiceContext" %>
+<%@ page import="com.liferay.portal.kernel.service.ServiceContextFactory" %>

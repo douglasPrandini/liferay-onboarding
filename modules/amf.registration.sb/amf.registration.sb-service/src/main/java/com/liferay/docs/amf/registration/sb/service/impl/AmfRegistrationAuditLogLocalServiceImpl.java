@@ -18,15 +18,13 @@ import com.liferay.docs.amf.registration.sb.dto.AmfRegistrationAuditLogDTO;
 import com.liferay.docs.amf.registration.sb.enums.ActionType;
 import com.liferay.docs.amf.registration.sb.model.AmfRegistrationAuditLog;
 import com.liferay.docs.amf.registration.sb.service.base.AmfRegistrationAuditLogLocalServiceBaseImpl;
-import com.liferay.docs.amf.registration.sb.service.persistence.AmfRegistrationAuditLogUtil;
-import com.liferay.portal.kernel.dao.orm.*;
-import com.liferay.portal.kernel.model.Address;
-import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.service.UserLocalService;
-import com.liferay.portal.kernel.service.UserLocalServiceUtil;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.util.Date;
 import java.util.List;
+
+import static com.liferay.portal.kernel.security.permission.PermissionThreadLocal.getPermissionChecker;
 
 /**
  * The implementation of the amf registration audit log local service.
@@ -45,9 +43,14 @@ import java.util.List;
 public class AmfRegistrationAuditLogLocalServiceImpl
 	extends AmfRegistrationAuditLogLocalServiceBaseImpl {
 
+
+    private static final String VIEW_ALL_USER_EVENTS = "VIEW_ALL_USER_EVENTS";
+    private static final long CLASS_PK = 0;
+
 	public void addNewRegister(AmfRegistrationAuditLogDTO amfRegistrationAuditLogDTO) {
 
-		AmfRegistrationAuditLog amfRegistrationAuditLog = amfRegistrationAuditLogPersistence.create(0);
+		long newId = counterLocalService.increment(AmfRegistrationAuditLog.class.getName());
+		AmfRegistrationAuditLog amfRegistrationAuditLog = amfRegistrationAuditLogPersistence.create(newId);
 
 		amfRegistrationAuditLog.setAction_time(new Date());
 		amfRegistrationAuditLog.setScreen_name(amfRegistrationAuditLogDTO.getScreen_name());
@@ -58,55 +61,62 @@ public class AmfRegistrationAuditLogLocalServiceImpl
 		amfRegistrationAuditLogPersistence.update(amfRegistrationAuditLog);
 	}
 
+    public List<AmfRegistrationAuditLog> findUsers(ServiceContext serviceContext, int start, int end) throws PortalException {
+        if(hasPermissionVIEW_ALL_USER_EVENTS(serviceContext)) {
+            return amfRegistrationAuditLogLocalService.getAmfRegistrationAuditLogs(start, end);
+        } else {
+            return amfRegistrationAuditLogPersistence.findByuser_id(serviceContext.getGuestOrUserId(), start, end);
+        }
+    }
 
-
-	public List<AmfRegistrationAuditLog> findByUserId(long userId) {
-		return AmfRegistrationAuditLogUtil.findByuser_id(userId);
+	public List<AmfRegistrationAuditLog> findByRegistration(ServiceContext serviceContext, int start, int end) throws PortalException {
+        if(hasPermissionVIEW_ALL_USER_EVENTS(serviceContext)) {
+            return amfRegistrationAuditLogPersistence.findByevent_type(ActionType.REGISTRATION.toString(), start, end);
+        } else {
+            return amfRegistrationAuditLogPersistence.findByEventTypeAndUserId(ActionType.REGISTRATION.toString(), serviceContext.getGuestOrUserId(), start, end);
+        }
 	}
 
-	public List<AmfRegistrationAuditLog> findByUserId(long userId, int start, int end) {
-		return AmfRegistrationAuditLogUtil.findByuser_id(userId, start, end);
+	public List<AmfRegistrationAuditLog> findByLoginLogout(ServiceContext serviceContext, int start, int end) throws PortalException {
+        if(hasPermissionVIEW_ALL_USER_EVENTS(serviceContext)) {
+            String[] loginLogout = { ActionType.LOGIN.toString(), ActionType.LOGOUT.toString() };
+            return amfRegistrationAuditLogPersistence.findByevent_type(loginLogout , start, end);
+        } else {
+            String[] loginLogout = {ActionType.LOGIN.toString(), ActionType.LOGOUT.toString()};
+            return amfRegistrationAuditLogPersistence.findByEventTypeAndUserId(loginLogout, serviceContext.getGuestOrUserId(), start, end);
+        }
 	}
 
-	public List<AmfRegistrationAuditLog> findByRegistration(int start, int end) {
-		return AmfRegistrationAuditLogUtil.findByevent_type(ActionType.REGISTRATION.toString(), start, end);
+    public int countUsers(ServiceContext serviceContext) throws PortalException {
+        if(hasPermissionVIEW_ALL_USER_EVENTS(serviceContext)) {
+            return amfRegistrationAuditLogLocalService.getAmfRegistrationAuditLogsCount();
+        } else {
+            return amfRegistrationAuditLogPersistence.countByuser_id(serviceContext.getGuestOrUserId());
+        }
+    }
+
+	public int countByRegistration(ServiceContext serviceContext) throws PortalException {
+        if(hasPermissionVIEW_ALL_USER_EVENTS(serviceContext)) {
+            return amfRegistrationAuditLogPersistence.countByevent_type(ActionType.REGISTRATION.toString());
+        } else {
+            return amfRegistrationAuditLogPersistence.countByEventTypeAndUserId(ActionType.REGISTRATION.toString(), serviceContext.getGuestOrUserId());
+        }
 	}
 
-	public List<AmfRegistrationAuditLog> findByRegistration(long userId, int start, int end) {
-		return AmfRegistrationAuditLogUtil.findByEventTypeAndUserId(ActionType.REGISTRATION.toString(), userId, start, end);
+	public int countByLoginLogout(ServiceContext serviceContext) throws PortalException {
+        if(hasPermissionVIEW_ALL_USER_EVENTS(serviceContext)) {
+            String[] loginLogout = { ActionType.LOGIN.toString(), ActionType.LOGOUT.toString() };
+            return amfRegistrationAuditLogPersistence.countByevent_type(loginLogout);
+        } else {
+            String[] loginLogout = {ActionType.LOGIN.toString(), ActionType.LOGOUT.toString()};
+            return amfRegistrationAuditLogPersistence.countByEventTypeAndUserId(loginLogout, serviceContext.getGuestOrUserId());
+        }
 	}
 
-	public List<AmfRegistrationAuditLog> findByLoginLogout(int start, int end) {
-		String[] loginLogout = { ActionType.LOGIN.toString(), ActionType.LOGOUT.toString() };
-		return AmfRegistrationAuditLogUtil.findByevent_type(loginLogout , start, end);
-	}
-
-	public List<AmfRegistrationAuditLog> findByLoginLogout(long userId, int start, int end) {
-		String[] loginLogout = { ActionType.LOGIN.toString(), ActionType.LOGOUT.toString() };
-		return AmfRegistrationAuditLogUtil.findByEventTypeAndUserId(loginLogout, userId, start, end);
-	}
-
-	public int countByUserId(long userId) {
-		return AmfRegistrationAuditLogUtil.countByuser_id(userId);
-	}
-
-	public int countByRegistration() {
-		return AmfRegistrationAuditLogUtil.countByevent_type(ActionType.REGISTRATION.toString());
-	}
-
-	public int countByRegistration(long userId) {
-		return AmfRegistrationAuditLogUtil.countByEventTypeAndUserId(ActionType.REGISTRATION.toString(), userId);
-	}
-
-	public int countByLoginLogout() {
-		String[] loginLogout = { ActionType.LOGIN.toString(), ActionType.LOGOUT.toString() };
-		return AmfRegistrationAuditLogUtil.countByevent_type(loginLogout);
-	}
-
-	public int countByLoginLogout(long userId) {
-		String[] loginLogout = { ActionType.LOGIN.toString(), ActionType.LOGOUT.toString() };
-		return AmfRegistrationAuditLogUtil.countByEventTypeAndUserId(loginLogout, userId);
-	}
-
-
+    public boolean hasPermissionVIEW_ALL_USER_EVENTS(ServiceContext serviceContext) {
+        return getPermissionChecker().hasPermission(
+                serviceContext.getScopeGroupId(),
+                serviceContext.getRootPortletId(),
+                CLASS_PK, VIEW_ALL_USER_EVENTS);
+    }
 }

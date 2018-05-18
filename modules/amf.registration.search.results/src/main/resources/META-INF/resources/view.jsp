@@ -1,25 +1,19 @@
 <%@ include file="/init.jsp" %>
-
-<%@ page import="java.util.List" %>
-<%@ page import="com.liferay.docs.amf.registration.sb.dto.UserDTO" %>
-<%@ page import="com.liferay.docs.amf.registration.sb.service.AmfRegistrationLocalServiceUtil" %>
-
-<h1>
-    Search Results for <b>${zipCode}</b>
-</h1>
-
 <%
-    int zipCode = 0;
-    if ( request.getAttribute("zipCode") != null && !((String)request.getAttribute("zipCode")).isEmpty() ) {
-        zipCode =  Integer.parseInt((String)request.getAttribute("zipCode"));
-    }
-    int count = 0;
+    Integer count = (Integer)request.getAttribute("count");
+    Integer zipCode = (Integer)request.getAttribute("zipCode");
+
+    String sZipCode = "";
     if(zipCode > 0) {
-        count = AmfRegistrationLocalServiceUtil.countByUsersByZip(zipCode);
+        sZipCode = zipCode.toString();
     }
 %>
 
-<liferay-ui:search-container delta="5" emptyResultsMessage="no.results" total="<%= count %>">
+<h1>
+    Search Results for <b><%= sZipCode %></b>
+</h1>
+
+<liferay-ui:search-container delta="5" emptyResultsMessage="no.results" total="${count}">
 
     <liferay-ui:search-container-results
         results="<%= AmfRegistrationLocalServiceUtil.findByUsersByZip(zipCode, searchContainer.getStart(), searchContainer.getEnd()) %>"

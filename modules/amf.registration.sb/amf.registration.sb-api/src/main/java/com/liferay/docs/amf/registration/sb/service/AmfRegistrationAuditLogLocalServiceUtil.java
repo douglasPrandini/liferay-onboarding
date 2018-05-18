@@ -41,6 +41,10 @@ public class AmfRegistrationAuditLogLocalServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.docs.amf.registration.sb.service.impl.AmfRegistrationAuditLogLocalServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
+	public static boolean hasPermissionVIEW_ALL_USER_EVENTS(
+		com.liferay.portal.kernel.service.ServiceContext serviceContext) {
+		return getService().hasPermissionVIEW_ALL_USER_EVENTS(serviceContext);
+	}
 
 	/**
 	* Adds the amf registration audit log to the database. Also notifies the appropriate model listeners.
@@ -144,24 +148,22 @@ public class AmfRegistrationAuditLogLocalServiceUtil {
 		return getService().getPersistedModel(primaryKeyObj);
 	}
 
-	public static int countByLoginLogout() {
-		return getService().countByLoginLogout();
+	public static int countByLoginLogout(
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().countByLoginLogout(serviceContext);
 	}
 
-	public static int countByLoginLogout(long userId) {
-		return getService().countByLoginLogout(userId);
+	public static int countByRegistration(
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().countByRegistration(serviceContext);
 	}
 
-	public static int countByRegistration() {
-		return getService().countByRegistration();
-	}
-
-	public static int countByRegistration(long userId) {
-		return getService().countByRegistration(userId);
-	}
-
-	public static int countByUserId(long userId) {
-		return getService().countByUserId(userId);
+	public static int countUsers(
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().countUsers(serviceContext);
 	}
 
 	/**
@@ -233,33 +235,24 @@ public class AmfRegistrationAuditLogLocalServiceUtil {
 	}
 
 	public static java.util.List<com.liferay.docs.amf.registration.sb.model.AmfRegistrationAuditLog> findByLoginLogout(
-		int start, int end) {
-		return getService().findByLoginLogout(start, end);
-	}
-
-	public static java.util.List<com.liferay.docs.amf.registration.sb.model.AmfRegistrationAuditLog> findByLoginLogout(
-		long userId, int start, int end) {
-		return getService().findByLoginLogout(userId, start, end);
+		com.liferay.portal.kernel.service.ServiceContext serviceContext,
+		int start, int end)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().findByLoginLogout(serviceContext, start, end);
 	}
 
 	public static java.util.List<com.liferay.docs.amf.registration.sb.model.AmfRegistrationAuditLog> findByRegistration(
-		int start, int end) {
-		return getService().findByRegistration(start, end);
+		com.liferay.portal.kernel.service.ServiceContext serviceContext,
+		int start, int end)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().findByRegistration(serviceContext, start, end);
 	}
 
-	public static java.util.List<com.liferay.docs.amf.registration.sb.model.AmfRegistrationAuditLog> findByRegistration(
-		long userId, int start, int end) {
-		return getService().findByRegistration(userId, start, end);
-	}
-
-	public static java.util.List<com.liferay.docs.amf.registration.sb.model.AmfRegistrationAuditLog> findByUserId(
-		long userId) {
-		return getService().findByUserId(userId);
-	}
-
-	public static java.util.List<com.liferay.docs.amf.registration.sb.model.AmfRegistrationAuditLog> findByUserId(
-		long userId, int start, int end) {
-		return getService().findByUserId(userId, start, end);
+	public static java.util.List<com.liferay.docs.amf.registration.sb.model.AmfRegistrationAuditLog> findUsers(
+		com.liferay.portal.kernel.service.ServiceContext serviceContext,
+		int start, int end)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().findUsers(serviceContext, start, end);
 	}
 
 	/**

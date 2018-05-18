@@ -34,6 +34,12 @@ public class AmfRegistrationAuditLogLocalServiceWrapper
 		_amfRegistrationAuditLogLocalService = amfRegistrationAuditLogLocalService;
 	}
 
+	@Override
+	public boolean hasPermissionVIEW_ALL_USER_EVENTS(
+		com.liferay.portal.kernel.service.ServiceContext serviceContext) {
+		return _amfRegistrationAuditLogLocalService.hasPermissionVIEW_ALL_USER_EVENTS(serviceContext);
+	}
+
 	/**
 	* Adds the amf registration audit log to the database. Also notifies the appropriate model listeners.
 	*
@@ -147,28 +153,24 @@ public class AmfRegistrationAuditLogLocalServiceWrapper
 	}
 
 	@Override
-	public int countByLoginLogout() {
-		return _amfRegistrationAuditLogLocalService.countByLoginLogout();
+	public int countByLoginLogout(
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _amfRegistrationAuditLogLocalService.countByLoginLogout(serviceContext);
 	}
 
 	@Override
-	public int countByLoginLogout(long userId) {
-		return _amfRegistrationAuditLogLocalService.countByLoginLogout(userId);
+	public int countByRegistration(
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _amfRegistrationAuditLogLocalService.countByRegistration(serviceContext);
 	}
 
 	@Override
-	public int countByRegistration() {
-		return _amfRegistrationAuditLogLocalService.countByRegistration();
-	}
-
-	@Override
-	public int countByRegistration(long userId) {
-		return _amfRegistrationAuditLogLocalService.countByRegistration(userId);
-	}
-
-	@Override
-	public int countByUserId(long userId) {
-		return _amfRegistrationAuditLogLocalService.countByUserId(userId);
+	public int countUsers(
+		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _amfRegistrationAuditLogLocalService.countUsers(serviceContext);
 	}
 
 	/**
@@ -247,42 +249,29 @@ public class AmfRegistrationAuditLogLocalServiceWrapper
 
 	@Override
 	public java.util.List<com.liferay.docs.amf.registration.sb.model.AmfRegistrationAuditLog> findByLoginLogout(
-		int start, int end) {
-		return _amfRegistrationAuditLogLocalService.findByLoginLogout(start, end);
-	}
-
-	@Override
-	public java.util.List<com.liferay.docs.amf.registration.sb.model.AmfRegistrationAuditLog> findByLoginLogout(
-		long userId, int start, int end) {
-		return _amfRegistrationAuditLogLocalService.findByLoginLogout(userId,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext,
+		int start, int end)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _amfRegistrationAuditLogLocalService.findByLoginLogout(serviceContext,
 			start, end);
 	}
 
 	@Override
 	public java.util.List<com.liferay.docs.amf.registration.sb.model.AmfRegistrationAuditLog> findByRegistration(
-		int start, int end) {
-		return _amfRegistrationAuditLogLocalService.findByRegistration(start,
-			end);
-	}
-
-	@Override
-	public java.util.List<com.liferay.docs.amf.registration.sb.model.AmfRegistrationAuditLog> findByRegistration(
-		long userId, int start, int end) {
-		return _amfRegistrationAuditLogLocalService.findByRegistration(userId,
+		com.liferay.portal.kernel.service.ServiceContext serviceContext,
+		int start, int end)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _amfRegistrationAuditLogLocalService.findByRegistration(serviceContext,
 			start, end);
 	}
 
 	@Override
-	public java.util.List<com.liferay.docs.amf.registration.sb.model.AmfRegistrationAuditLog> findByUserId(
-		long userId) {
-		return _amfRegistrationAuditLogLocalService.findByUserId(userId);
-	}
-
-	@Override
-	public java.util.List<com.liferay.docs.amf.registration.sb.model.AmfRegistrationAuditLog> findByUserId(
-		long userId, int start, int end) {
-		return _amfRegistrationAuditLogLocalService.findByUserId(userId, start,
-			end);
+	public java.util.List<com.liferay.docs.amf.registration.sb.model.AmfRegistrationAuditLog> findUsers(
+		com.liferay.portal.kernel.service.ServiceContext serviceContext,
+		int start, int end)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _amfRegistrationAuditLogLocalService.findUsers(serviceContext,
+			start, end);
 	}
 
 	/**

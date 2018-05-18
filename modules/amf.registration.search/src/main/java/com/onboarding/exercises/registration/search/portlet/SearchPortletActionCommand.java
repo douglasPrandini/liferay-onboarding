@@ -24,8 +24,6 @@ import java.util.List;
         service = MVCActionCommand.class)
 public class SearchPortletActionCommand extends BaseMVCActionCommand {
 
-    public static final String ZIP_CODE_LIST = "ZIP_CODE_LIST";
-
     @Override
     protected void doProcessAction(ActionRequest actionRequest, ActionResponse actionResponse) throws Exception {
 
@@ -33,26 +31,11 @@ public class SearchPortletActionCommand extends BaseMVCActionCommand {
         QName qName = new QName("http://liferay.onboarding.com", "queryZipCode");
         actionResponse.setEvent(qName, zipCode);
 
-        setSessionZipCode(actionRequest, zipCode);
+        actionRequest.setAttribute("zipCode", zipCode);
 
         String no_default_error_message = PortalUtil.getPortletId(actionRequest) +
                 SessionMessages.KEY_SUFFIX_HIDE_DEFAULT_ERROR_MESSAGE;
         SessionMessages.add(actionRequest, no_default_error_message);
     }
-
-    private void setSessionZipCode(ActionRequest actionRequest, String zipCode) {
-        List<String> zipCodes = new ArrayList<>();
-
-        PortletSession session = actionRequest.getPortletSession();
-        if(session.getAttribute(ZIP_CODE_LIST, PortletSession.APPLICATION_SCOPE) != null) {
-            zipCodes = (List<String>) session.getAttribute(ZIP_CODE_LIST, PortletSession.APPLICATION_SCOPE);
-        }
-
-        zipCodes.add(zipCode);
-        session.setAttribute(ZIP_CODE_LIST, zipCodes, PortletSession.APPLICATION_SCOPE);
-    }
-
-
-
 
 }

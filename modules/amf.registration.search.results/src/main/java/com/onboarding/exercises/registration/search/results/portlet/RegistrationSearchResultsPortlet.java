@@ -36,16 +36,27 @@ import java.util.List;
 )
 public class RegistrationSearchResultsPortlet extends MVCPortlet {
 
+	private int _zipCode = 0;
+
 	@Override
 	public void render(RenderRequest request, RenderResponse response) throws IOException, PortletException {
+
+		int count = 0;
+		if(_zipCode > 0) {
+			count = AmfRegistrationLocalServiceUtil.countByUsersByZip(_zipCode);
+		}
+		request.setAttribute("count", count);
+		request.setAttribute("zipCode", _zipCode);
+
 		super.render(request, response);
 	}
-
 
 	@ProcessEvent(qname="{http://liferay.onboarding.com}queryZipCode")
 	public void search(EventRequest eventRequest, EventResponse eventResponse){
 		Event event = eventRequest.getEvent();
-		String query = (String)event.getValue();
-		eventRequest.setAttribute("zipCode", query);
+		String zipCode = (String)event.getValue();
+
+		_zipCode = Integer.parseInt(zipCode);
+		eventRequest.setAttribute("zipCode", zipCode);
 	}
 }

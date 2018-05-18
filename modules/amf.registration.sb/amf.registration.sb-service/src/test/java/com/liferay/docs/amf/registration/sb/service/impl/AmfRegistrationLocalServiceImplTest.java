@@ -31,8 +31,8 @@ public class AmfRegistrationLocalServiceImplTest {
     @InjectMocks
     private AmfRegistrationLocalServiceImpl _amfRegistrationLocalServiceImpl;
 
-    @Mock
-    private AssessorUserLocalService assessorUserLocalService;
+    @InjectMocks
+    private AssessorUserLocalService _assessorUserLocalService;
 
     @Mock
     private UserLocalService userLocalService;
@@ -48,6 +48,8 @@ public class AmfRegistrationLocalServiceImplTest {
 
     @Before
     public void setup() {
+        _assessorUserLocalService = new Mockito().mock(AssessorUserLocalService.class);
+        _amfRegistrationLocalServiceImpl.setAssessorUserLocalService(_assessorUserLocalService);
     }
     @After
     public void clean() {
@@ -391,7 +393,7 @@ public class AmfRegistrationLocalServiceImplTest {
     }
 
     @Test
-    public void securityAnswerMustaveLessThan255Chars() {
+    public void securityAnswerMustHaveLessThan255Chars() {
         RegistrationDto registrationDto = getRegistrationDto();
         String addressMoreThan255Chars = new String(new char[256]).replace('\0', 'A');
         registrationDto.setSecurityAnswer(addressMoreThan255Chars);
@@ -409,13 +411,13 @@ public class AmfRegistrationLocalServiceImplTest {
         String username = registrationDto.getUsername();
         Mockito.when(userLocalService.getUserByScreenName(companyId, username)).thenThrow(PortalException.class);
 
-        //mock add user to return and object user
-        Mockito.when(assessorUserLocalService.addUser(registrationDto)).thenReturn(_user);
+        //mock addUser to return a user object
+        Mockito.when(_assessorUserLocalService.addUser(registrationDto)).thenReturn(_user);
 
         _amfRegistrationLocalServiceImpl.addNewAccount(registrationDto);
 
         //Asserts
-        Mockito.verify(assessorUserLocalService, VerificationModeFactory.times(1))
+        Mockito.verify(_assessorUserLocalService, VerificationModeFactory.times(1))
                 .addUser(registrationDto);
         Mockito.verify(userLocalService, VerificationModeFactory.times(1))
                 .updateReminderQuery(_user.getUserId(), registrationDto.getSecurityQuestion(), registrationDto.getSecurityAnswer());

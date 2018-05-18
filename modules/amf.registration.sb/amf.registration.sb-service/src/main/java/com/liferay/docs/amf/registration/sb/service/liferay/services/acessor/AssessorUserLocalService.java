@@ -14,13 +14,9 @@ import java.util.Calendar;
 * The interface just exist to be mocked
 * */
 public class AssessorUserLocalService implements AssessorUserLocalServiceInterface {
+
     private UserLocalService userLocalService;
-
     private ServiceContext serviceContext;
-
-    public AssessorUserLocalService(UserLocalService userLocalService) {
-        setUserLocalService(userLocalService);
-    }
 
     public void setUserLocalService(UserLocalService userLocalService) {
         this.userLocalService = userLocalService;

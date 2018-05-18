@@ -10,3 +10,7 @@ taglib uri="http://liferay.com/tld/ui" prefix="liferay-ui" %>
 <liferay-theme:defineObjects />
 
 <portlet:defineObjects />
+
+<%@ page import="java.util.List" %>
+<%@ page import="com.liferay.docs.amf.registration.sb.dto.UserDTO" %>
+<%@ page import="com.liferay.docs.amf.registration.sb.service.AmfRegistrationLocalServiceUtil" %>

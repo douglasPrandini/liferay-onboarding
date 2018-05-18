@@ -55,8 +55,7 @@ public class AmfRegistrationLocalServiceImpl extends AmfRegistrationLocalService
 
 	public AmfRegistrationLocalServiceImpl() {
 		errors = new ArrayList<>();
-
-        _assessorUserLocalService = new AssessorUserLocalService(userLocalService);
+		_assessorUserLocalService = new AssessorUserLocalService();
 	}
 
 	@Override
@@ -78,6 +77,8 @@ public class AmfRegistrationLocalServiceImpl extends AmfRegistrationLocalService
 	}
 
 	private void createNewAccount(RegistrationDto registrationDto) throws PortalException {
+
+		_assessorUserLocalService.setUserLocalService(userLocalService);
 
 	    User user = _assessorUserLocalService.addUser(registrationDto);
 		userLocalService.updateReminderQuery(user.getUserId(), registrationDto.getSecurityQuestion(), registrationDto.getSecurityAnswer());
@@ -401,5 +402,10 @@ public class AmfRegistrationLocalServiceImpl extends AmfRegistrationLocalService
 
 	public void setServiceContext(ServiceContext serviceContext) {
 		this.serviceContext = serviceContext;
+	}
+
+	//create to inject mock for unit test
+	public void setAssessorUserLocalService(AssessorUserLocalService assessorUserLocalService) {
+		_assessorUserLocalService = assessorUserLocalService;
 	}
 }
