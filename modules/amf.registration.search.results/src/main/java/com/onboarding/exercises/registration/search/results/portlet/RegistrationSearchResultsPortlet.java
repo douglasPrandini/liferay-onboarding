@@ -38,6 +38,8 @@ public class RegistrationSearchResultsPortlet extends MVCPortlet {
 
 	private int _zipCode = 0;
 
+
+
 	@Override
 	public void render(RenderRequest request, RenderResponse response) throws IOException, PortletException {
 

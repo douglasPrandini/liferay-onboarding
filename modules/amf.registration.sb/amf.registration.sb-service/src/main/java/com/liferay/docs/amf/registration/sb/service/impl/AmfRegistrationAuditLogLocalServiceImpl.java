@@ -42,7 +42,6 @@ public class AmfRegistrationAuditLogLocalServiceImpl
 	extends AmfRegistrationAuditLogLocalServiceBaseImpl {
 
 	public void addNewRegister(AmfRegistrationAuditLogDTO amfRegistrationAuditLogDTO) {
-
 		long newId = counterLocalService.increment(AmfRegistrationAuditLog.class.getName());
 		AmfRegistrationAuditLog amfRegistrationAuditLog = amfRegistrationAuditLogPersistence.create(newId);
 
@@ -54,6 +53,4 @@ public class AmfRegistrationAuditLogLocalServiceImpl
 
 		amfRegistrationAuditLogPersistence.update(amfRegistrationAuditLog);
 	}
-
-
 }
