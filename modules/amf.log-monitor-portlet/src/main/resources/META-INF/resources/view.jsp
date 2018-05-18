@@ -7,9 +7,9 @@
 <liferay-ui:tabs names="All,Registration,Login" refresh="false" tabsValues="All,Registration,Login">
     <liferay-ui:section>
 
-        <liferay-ui:search-container delta="20" emptyResultsMessage="No results" total="<%= AmfRegistrationAuditLogLocalServiceUtil.countUsers(serviceContext) %>">
+        <liferay-ui:search-container delta="20" emptyResultsMessage="No results" total="<%= AmfRegistrationAuditLogServiceUtil.countUsers(serviceContext) %>">
             <liferay-ui:search-container-results
-                results="<%= AmfRegistrationAuditLogLocalServiceUtil.findUsers(serviceContext, searchContainer.getStart(), searchContainer.getEnd()) %>"
+                results="<%= AmfRegistrationAuditLogServiceUtil.findUsers(serviceContext, searchContainer.getStart(), searchContainer.getEnd()) %>"
             />
 
             <liferay-ui:search-container-row className="AmfRegistrationAuditLog" keyProperty="id" modelVar="log">
@@ -28,10 +28,10 @@
     </liferay-ui:section>
 
     <liferay-ui:section>
-        <liferay-ui:search-container delta="20" emptyResultsMessage="No results" total="<%= AmfRegistrationAuditLogLocalServiceUtil.countByRegistration(serviceContext) %>">
+        <liferay-ui:search-container delta="20" emptyResultsMessage="No results" total="<%= AmfRegistrationAuditLogServiceUtil.countByRegistration(serviceContext) %>">
 
             <liferay-ui:search-container-results
-                results="<%= AmfRegistrationAuditLogLocalServiceUtil.findByRegistration(serviceContext, searchContainer.getStart(), searchContainer.getEnd()) %>"
+                results="<%= AmfRegistrationAuditLogServiceUtil.findByRegistration(serviceContext, searchContainer.getStart(), searchContainer.getEnd()) %>"
             />
 
             <liferay-ui:search-container-row className="AmfRegistrationAuditLog" keyProperty="id" modelVar="log">
@@ -50,10 +50,10 @@
 
 
     <liferay-ui:section>
-        <liferay-ui:search-container delta="20" emptyResultsMessage="No results" total="<%= AmfRegistrationAuditLogLocalServiceUtil.countByLoginLogout(serviceContext) %>">
+        <liferay-ui:search-container delta="20" emptyResultsMessage="No results" total="<%= AmfRegistrationAuditLogServiceUtil.countByLoginLogout(serviceContext) %>">
 
             <liferay-ui:search-container-results
-                results="<%= AmfRegistrationAuditLogLocalServiceUtil.findByLoginLogout(serviceContext, searchContainer.getStart(), searchContainer.getEnd()) %>"
+                results="<%= AmfRegistrationAuditLogServiceUtil.findByLoginLogout(serviceContext, searchContainer.getStart(), searchContainer.getEnd()) %>"
             />
 
             <liferay-ui:search-container-row className="AmfRegistrationAuditLog" keyProperty="id" modelVar="log">

@@ -1,6 +1,8 @@
 package com.onboarding.exercises.portlet;
 
+import com.liferay.docs.amf.registration.sb.model.AmfRegistrationAuditLog;
 import com.liferay.docs.amf.registration.sb.service.AmfRegistrationAuditLogLocalServiceUtil;
+import com.liferay.docs.amf.registration.sb.service.AmfRegistrationAuditLogServiceUtil;
 import com.liferay.docs.amf.registration.sb.service.AmfRegistrationLocalServiceUtil;
 import com.liferay.docs.amf.registration.sb.service.persistence.AmfRegistrationAuditLogUtil;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
@@ -37,30 +39,4 @@ import java.io.IOException;
 
 public class LogMonitorPortlet extends MVCPortlet {
 
-	@Override
-	public void render(RenderRequest request, RenderResponse response) throws IOException, PortletException {
-
-		ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
-		PortletDisplay portletDisplay = themeDisplay.getPortletDisplay();
-		PermissionChecker permissionChecker = themeDisplay.getPermissionChecker();
-		boolean hasAllUserViewEventsPermissions =
-				permissionChecker.hasPermission(
-						themeDisplay.getScopeGroupId(),
-						portletDisplay.getRootPortletId(),
-						portletDisplay.getResourcePK(),
-						"VIEW_ALL_USER_EVENTS");
-
-
-		/*if(hasAllUserViewEventsPermissions) {
-			AmfRegistrationAuditLogLocalServiceUtil.getAmfRegistrationAuditLogsCount();
-		} else {
-			count = AmfRegistrationAuditLogLocalServiceUtil.countByUserId(userU.getUserId());
-			countRegistration = AmfRegistrationAuditLogLocalServiceUtil.countByRegistration(userU.getUserId());
-			countLoginLogout = AmfRegistrationAuditLogLocalServiceUtil.countByLoginLogout(userU.getUserId());
-		}*/
-
-		request.setAttribute("hasAllUserViewEventsPermissions", hasAllUserViewEventsPermissions);
-
-		super.render(request, response);
-	}
 }
